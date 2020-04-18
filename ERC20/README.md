@@ -2,7 +2,7 @@
 
 ## 发行ERC20代币
 > 使用方法:
-```
+```shell
 $ npm install truffle -g //安装过请忽略
 $ npm install            //安装依赖包
 $ truffle compile        //编译合约
