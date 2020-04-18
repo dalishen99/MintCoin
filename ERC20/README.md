@@ -20,7 +20,14 @@ module.exports = function(deployer) {
 };
 ```
 ```
-$ truffle migrate --network develop //布署合约
+//打开truffle开发环境
+$ truffle develop 
+//布署合约
+truffle(develop)> migrate 
+//实例化合约
+truffle(develop)> const contract = await ERC20FixedSupply.deployed() 
+//调用合约方法
+truffle(develop)> contract.name() 
 ```
 > 布署到主网方法: [链接](https://github.com/Fankouzu/smart-contract/tree/master/Solidity%20Lesson%2003) [视频课](https://www.bilibili.com/video/BV1vJ41117ck/)
 ---
