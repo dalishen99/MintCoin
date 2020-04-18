@@ -1,15 +1,33 @@
 # MintCoin崔棉大师的花式发币法
 
 ## 发行ERC20代币
-
+> 使用方法:
 ```
 $ npm install truffle -g //安装过请忽略
 $ npm install            //安装依赖包
+$ truffle compile        //编译合约
+$ vim migrations/2_deploy_contracts.js  //编辑布署文件
 ```
+```javascript
+//可以将ERC20FixedSupply替换成自己想要布署的合约名称
+const Migrations = artifacts.require("ERC20FixedSupply"); 
+
+module.exports = function(deployer) {
+    deployer.deploy(Migrations,
+    //布署合约时需要提供构造函数的参数
+    //注意参数的数量,封顶合约要多一个参数
+    "My Golden Coin","MGC",18,1000000000);
+};
+```
+```
+$ truffle migrate --network develop //布署合约
+```
+> 布署到主网方法: [链接](https://github.com/Fankouzu/smart-contract/tree/master/Solidity%20Lesson%2003) [视频课](https://www.bilibili.com/video/BV1vJ41117ck/)
+---
 
 ### 1.固定总量代币
 ```
-./ERC20/contract/ERC20FixedSupply.sol
+./contract/ERC20FixedSupply.sol
 ```
 > 在布署合约时定义以下变量(以下合约均需要定义)
 ```javascript
@@ -35,7 +53,7 @@ transferFrom(address sender, address recipient, uint256 amount) external returns
 ```
 ### 2.奖励矿工代币
 ```
-./ERC20/contract/ERC20WithMinerReward.sol
+./contract/ERC20WithMinerReward.sol
 ```
 ```javascript
 // block.coinbase 为当前区块的矿工地址,将原来的msg.sender替换成它就可以实现奖励矿工
@@ -44,7 +62,7 @@ _mint(block.coinbase, totalSupply * (10 ** uint256(decimals)));
 
 ### 3.可销毁代币
 ```
-./ERC20/contract/ERC20WithBurnable.sol
+./contract/ERC20WithBurnable.sol
 ```
 ```javascript
 burn(uint256 amount) public //调用此方法可以从调用者账户中销毁代币
@@ -53,7 +71,7 @@ burnFrom(address account, uint256 amount) public //调用此方法可以从指�
 
 ### 4.可增发代币
 ```
-./ERC20/contract/ERC20WithMintable.sol
+./contract/ERC20WithMintable.sol
 ```
 ```javascript
 isMinter(address account) public view returns (bool)   //查询指定地址是否拥有铸币权
@@ -63,7 +81,7 @@ renounceMinter() public                                //撤销当前发送账�
 
 ### 5.有封顶代币
 ```
-./ERC20/contract/ERC20WithCapped.sol
+./contract/ERC20WithCapped.sol
 ```
 > 布署合约时构造函数增加
 ```javascript
@@ -75,7 +93,7 @@ cap() public view returns (uint256)     //返回封顶数量
 
 ### 6.可暂停代币
 ```
-./ERC20/contract/ERC20WithPausable.sol
+./contract/ERC20WithPausable.sol
 ```
 ```javascript
 isPauser(address account) public view returns (bool)      //返回指定地址是否拥有暂停权  
