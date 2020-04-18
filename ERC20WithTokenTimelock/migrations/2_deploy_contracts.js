@@ -19,7 +19,7 @@ module.exports = (deployer, network, accounts) => {
         .then((ERC20FixedSupplyInstance) => {
             return deployer.deploy(ERC20WithTokenTimelock,
                 ERC20FixedSupplyInstance.address,   //ERC20代币合约地址
-                accounts[0],                        //受益人
+                accounts[0],                        //受益人为当前账户
                 timelock                            //解锁时间戳
             ).then((ERC20WithTokenTimelockInstance) => {
                 //将代币转移到锁仓合约的账户中

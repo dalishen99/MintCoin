@@ -10,7 +10,7 @@ module.exports = async (deployer, network, accounts) => {
     const ERC20FixedSupplyInstance = await ERC20FixedSupply.deployed();
     return deployer.deploy(ERC20WithTokenTimelock,
         ERC20FixedSupplyInstance.address,        //ERC20代币合约地址,如果你希望在未来的某个时间布署这个锁仓合约,可以将这里替换成合约地址
-        accounts[1],                             //当前账户
+        accounts[1],                             //受益人
         timelock                                 //解锁时间戳
     ).then(function (ERC20WithTokenTimelockInstance) {
         //将代币转移到锁仓合约的账户中
