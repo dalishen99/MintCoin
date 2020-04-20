@@ -2,11 +2,11 @@
 
 ## 固定总量代币
 
-[合约文件: ERC20FixedSupply.sol](../contract/ERC20/ERC20FixedSupply.sol)
+[合约文件: ERC20FixedSupply.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20FixedSupply.sol)
 
-[测试脚本: ERC20FixedSupply.js](../test/ERC20FixedSupply.js)
+[测试脚本: ERC20FixedSupply.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20FixedSupply.js)
 
-[布署脚本: 2_deploy_ERC20FixedSupply.js](../migrations/2_deploy_ERC20FixedSupply.js)
+[布署脚本: 2_deploy_ERC20FixedSupply.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/2_deploy_ERC20FixedSupply.js)
 
 ### 在布署合约时定义以下变量
 ```javascript

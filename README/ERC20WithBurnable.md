@@ -2,11 +2,11 @@
 
 ## 可销毁代币
 
-[合约文件: ERC20WithBurnable.sol](../contract/ERC20/ERC20WithBurnable.sol)
+[合约文件: ERC20WithBurnable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithBurnable.sol)
 
-[测试脚本: ERC20WithBurnable.js](../test/ERC20WithBurnable.js)
+[测试脚本: ERC20WithBurnable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20WithBurnable.js)
 
-[布署脚本: 3_deploy_ERC20WithBurnable.js](../migrations/3_deploy_ERC20WithBurnable.js)
+[布署脚本: 3_deploy_ERC20WithBurnable.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/3_deploy_ERC20WithBurnable.js)
 
 ### 在布署合约时定义以下变量
 ```javascript

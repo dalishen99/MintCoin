@@ -9,11 +9,11 @@
 > 所有的众筹合约都要在一个ERC20代币布署成功后再布署众筹合约,布署脚本中已经设置了一个可增发代币的众筹合约
 
 
-[合约文件: ERC20MintedCrowdsale.sol](../contract/ERC20/ERC20MintedCrowdsale.sol)
+[合约文件: ERC20MintedCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20MintedCrowdsale.sol)
 
-[测试脚本: ERC20MintedCrowdsale.js](../test/ERC20MintedCrowdsale.js)
+[测试脚本: ERC20MintedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20MintedCrowdsale.js)
 
-[布署脚本: 10_deploy_ERC20MintedCrowdsale.js](../migrations/10_deploy_ERC20MintedCrowdsale.js)
+[布署脚本: 10_deploy_ERC20MintedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/10_deploy_ERC20MintedCrowdsale.js)
 
 ### 在布署合约时定义以下变量
 ```javascript
