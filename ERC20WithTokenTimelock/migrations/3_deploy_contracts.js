@@ -5,7 +5,7 @@ module.exports = async (deployer, network, accounts) => {
     //锁仓总量
     const amount = 1000;
     //解锁时间戳
-    const timelock = parseInt(new Date().getTime() / 1000 + 3600 * 24 * 7);
+    const timelock = parseInt(new Date().getTime() / 1000 + 60);
     //实例化ERC20合约
     const ERC20FixedSupplyInstance = await ERC20FixedSupply.deployed();
     return deployer.deploy(ERC20WithTokenTimelock,

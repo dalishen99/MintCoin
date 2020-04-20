@@ -34,7 +34,7 @@ transferFrom(address sender, address recipient, uint256 amount) external returns
 > 在布署合约时定义以下变量(以下合约均需要定义)
 ```javascript
 IERC20 token            //ERC20代币地址
-address beneficiary     //受益人,可以是发送者意外的另一个账户
+address beneficiary     //受益人,可以是发送者以外的另一个账户
 uint256 releaseTime     //解锁时间戳
 ```
 > 合约调用方法(下同)
@@ -55,12 +55,13 @@ release() public                                //触发解锁,任何人都可�
 
 > 使用方法:
 ```shell
-//安装Truffle,安装过请忽略
-$ npm install truffle -g 
-//安装依赖包
-$ npm install          
-//编译合约  
-$ truffle compile     
+$ npm install            //安装依赖包
+$ npm run compile        //编译合约
+$ npm run node           //打开一个测试节点
+$ npm run migrate        //布署合约到测试节点
+```
+> 布署到truffle  
+```
 //打开truffle开发环境
 $ truffle develop 
 //布署合约
@@ -70,4 +71,6 @@ truffle(develop)> const contract = await ERC20FixedSupply.deployed()
 //调用合约方法
 truffle(develop)> contract.name() 
 ```
-> 布署到主网方法: [链接](https://github.com/Fankouzu/smart-contract/tree/master/Solidity%20Lesson%2003) [视频课](https://www.bilibili.com/video/BV1vJ41117ck/)
+> 布署到主网方法: 
+[链接](https://github.com/Fankouzu/smart-contract/tree/master/Solidity%20Lesson%2003) 
+[视频课](https://www.bilibili.com/video/BV1vJ41117ck/)

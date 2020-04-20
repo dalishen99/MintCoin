@@ -8,7 +8,7 @@ module.exports = (deployer, network, accounts) => {
     //锁仓总量
     const amount = 1000;  
     //解锁时间戳
-    const timelock = parseInt(new Date().getTime() / 1000 + 3600 * 24 * 7)
+    const timelock = parseInt(new Date().getTime() / 1000 + 60)
     deployer.deploy(ERC20FixedSupply,
         //构造函数的参数,注意参数的数量,封顶合约要多一个参数
         "My Golden Coin",   //代币名称
