@@ -14,6 +14,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "test": "DEBUG=GasUsed truffle test",
     "migrate": "truffle migrate",
     "compile": "truffle compile",
     "node": "ganache-cli -l 0x1fffffffffffff -g 1 --allowUnlimitedContractSize -m \" elephant potato mind luggage remind desk tourist valve license flame favorite tilt\""

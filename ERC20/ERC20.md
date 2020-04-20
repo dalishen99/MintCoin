@@ -1,12 +1,14 @@
 # MintCoin崔棉大师的花式发币法
 
-## 众筹代币
+## 发行ERC20代币
 > 使用方法:
 ```shell
-$ npm install truffle -g //安装过请忽略
 $ npm install            //安装依赖包
+$ npm run compile        //编译合约
+$ npm run node           //打开一个测试节点
 $ vim migrations/2_deploy_contracts.js  //编辑布署文件
-$ truffle compile        //编译合约
+$ npm run migrate        //布署合约到测试节点
+$ npm run test           //测试合约
 ```
 ```javascript
 //可以将ERC20FixedSupply替换成自己想要布署的合约名称
@@ -19,6 +21,7 @@ module.exports = function(deployer) {
     "My Golden Coin","MGC",18,1000000000);
 };
 ```
+> 布署合约到truffle
 ```
 //打开truffle开发环境
 $ truffle develop 
@@ -29,12 +32,14 @@ truffle(develop)> const contract = await ERC20FixedSupply.deployed()
 //调用合约方法
 truffle(develop)> contract.name() 
 ```
-> 布署到主网方法: [链接](https://github.com/Fankouzu/smart-contract/tree/master/Solidity%20Lesson%2003) [视频课](https://www.bilibili.com/video/BV1vJ41117ck/)
+> 布署到主网方法: 
+[链接](https://github.com/Fankouzu/smart-contract/tree/master/Solidity%20Lesson%2003) 
+[视频课](https://www.bilibili.com/video/BV1vJ41117ck/)
 ---
 
 ### 1.固定总量代币
 ```
-./contract/ERC20FixedSupply.sol
+./contract/ERC20/ERC20/ERC20FixedSupply.sol
 ```
 > 在布署合约时定义以下变量(以下合约均需要定义)
 ```javascript
@@ -58,37 +63,30 @@ approve(address spender, uint256 amount) external returns (bool)
 //spender调用这个函数发送sender账户中的amount数量的代币给recipient
 transferFrom(address sender, address recipient, uint256 amount) external returns (bool)
 ```
-### 2.奖励矿工代币
-```
-./contract/ERC20WithMinerReward.sol
-```
-```javascript
-// block.coinbase 为当前区块的矿工地址,将原来的msg.sender替换成它就可以实现奖励矿工
-_mint(block.coinbase, totalSupply * (10 ** uint256(decimals)));
-```
 
-### 3.可销毁代币
+### 2.可销毁代币
 ```
-./contract/ERC20WithBurnable.sol
+./contract/ERC20/ERC20/ERC20WithBurnable.sol
 ```
 ```javascript
 burn(uint256 amount) public //调用此方法可以从调用者账户中销毁代币
 burnFrom(address account, uint256 amount) public //调用此方法可以从指定地址销毁代币,代币从发送者的批准中扣除
 ```
 
-### 4.可增发代币
+### 3.可增发代币
 ```
-./contract/ERC20WithMintable.sol
+./contract/ERC20/ERC20WithMintable.sol
 ```
 ```javascript
 isMinter(address account) public view returns (bool)   //查询指定地址是否拥有铸币权
 addMinter(address account) public onlyMinter           //给指定地址添加铸币权,只能通过有铸币权的地址添加
 renounceMinter() public                                //撤销当前发送账户的铸币权
+mint(address account, uint256 amount) public onlyMinter returns (bool) //铸币
 ```
 
-### 5.有封顶代币
+### 4.有封顶代币
 ```
-./contract/ERC20WithCapped.sol
+./contract/ERC20/ERC20WithCapped.sol
 ```
 > 布署合约时构造函数增加
 ```javascript
@@ -98,9 +96,9 @@ uint256 cap             //封顶数量
 cap() public view returns (uint256)     //返回封顶数量
 ```
 
-### 6.可暂停代币
+### 5.可暂停代币
 ```
-./contract/ERC20WithPausable.sol
+./contract/ERC20/ERC20WithPausable.sol
 ```
 ```javascript
 isPauser(address account) public view returns (bool)      //返回指定地址是否拥有暂停权  

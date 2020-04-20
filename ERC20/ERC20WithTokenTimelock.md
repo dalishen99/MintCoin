@@ -7,22 +7,6 @@
 > 先按照发行ERC20代币的方法布署好合约,记录下合约地址,然后执行先发行后锁仓的布署脚本.
 > 这里注意:为了运行本示例,布署脚本中直接实例化了刚布署的ERC20合约.而在实际情况中往往不能这么做,你可以将实例化合约的代码替换成合约地址,然后通过外部调用的方法将代币转移到锁仓合约的地址上.
 
-> 锁仓合约调用方法
-```javascript
-//返回发行总量
-totalSupply() external view returns (uint256)
-//返回指定地址的余额
-balanceOf(address account) external view returns (uint256)
-//发送代币,从当前账户发送到指定地址
-transfer(address recipient, uint256 amount) external returns (bool)
-//查询owner给予spender的配额
-allowance(address owner, address spender) external view returns (uint256)
-//批准spender代表发送者使用amount数量的代币
-approve(address spender, uint256 amount) external returns (bool)
-//spender调用这个函数发送sender账户中的amount数量的代币给recipient
-transferFrom(address sender, address recipient, uint256 amount) external returns (bool)
-```
-
 ### 1.固定总量代币
 ```
 ./contract/ERC20FixedSupply.sol
@@ -37,7 +21,7 @@ IERC20 token            //ERC20代币地址
 address beneficiary     //受益人,可以是发送者以外的另一个账户
 uint256 releaseTime     //解锁时间戳
 ```
-> 合约调用方法(下同)
+> 合约调用方法
 ```javascript
 token() public view returns (IERC20)            //返回ERC20合约
 beneficiary() public view returns (address)     //返回受益人地址
@@ -59,6 +43,7 @@ $ npm install            //安装依赖包
 $ npm run compile        //编译合约
 $ npm run node           //打开一个测试节点
 $ npm run migrate        //布署合约到测试节点
+$ npm run test           //测试合约
 ```
 > 布署到truffle  
 ```
