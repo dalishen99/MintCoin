@@ -1,13 +1,16 @@
 # MintCoin崔棉大师的花式发币法
 
 ## 合约文件
+### ERC20合约
 - [固定总量代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20FixedSupply.md)
 - [可销毁代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithBurnable.md)
 - [可增发代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithMintable.md)
 - [有封顶代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithCapped.md)
 - [可暂停代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithPausable.md)
+### 锁仓合约
 - [发行代币同时锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/IssueTokenWithTimelock.md)
 - [发行代币之后锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/IssueTokenBeforeTimelock.md)
+### 众筹合约
 - [通用众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20AllowanceCrowdsale.md)
 - [铸造式众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20MintedCrowdsale.md)
 
