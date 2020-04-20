@@ -5,6 +5,7 @@ yarn-error.log
 .DS_Store
 *.keystore
 !debug.keystore
+package-lock.json
 
 .vscode/
 
