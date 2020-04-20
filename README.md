@@ -1,7 +1,7 @@
 # MintCoin崔棉大师的花式发币法
 
 ## 合约文件
-- [固定总量代币]
+- [固定总量代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20FixedSupply.md)
 
 ## 使用方法:
 ### 安装
