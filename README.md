@@ -12,7 +12,7 @@
 ### 发行众筹代币
 - [通用众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20AllowanceCrowdsale.md)
 - [铸造式众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20MintedCrowdsale.md)
-
+---
 ### 安装
 ```shell
 $ npm install            //安装依赖包

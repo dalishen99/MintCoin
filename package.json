@@ -10,7 +10,6 @@
     "@davidqhr/ganache-cli": "6.4.3",
     "@openzeppelin/contracts": "^2.5.0",
     "@truffle/hdwallet-provider": "^1.0.12",
-    "inquirer": "^7.1.0",
     "truffle": "5.0.22"
   },
   "devDependencies": {},
@@ -18,7 +17,7 @@
     "test": "DEBUG=GasUsed truffle test",
     "migrate": "truffle migrate",
     "compile": "truffle compile",
-    "node": "ganache-cli -l 0x1fffffffffffff -g 1 --allowUnlimitedContractSize -m \" elephant potato mind luggage remind desk tourist valve license flame favorite tilt\""
+    "node": "ganache-cli -l 0x1fffffffffffff -g 1 --allowUnlimitedContractSize "
   },
   "keywords": [],
   "author": "",
