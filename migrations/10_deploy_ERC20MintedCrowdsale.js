@@ -1,3 +1,4 @@
+//铸造式众筹合约必须在可增发代币基础上构建
 const ERC20WithMintable = artifacts.require("ERC20WithMintable");
 const ERC20MintedCrowdsale = artifacts.require("ERC20MintedCrowdsale");
 

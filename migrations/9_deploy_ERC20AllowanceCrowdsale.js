@@ -1,3 +1,4 @@
+//可以将ERC20FixedSupply替换成自己想要布署的合约名称
 const ERC20FixedSupply = artifacts.require("ERC20FixedSupply");
 const ERC20AllowanceCrowdsale = artifacts.require("ERC20AllowanceCrowdsale");
 

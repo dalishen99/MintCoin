@@ -1,4 +1,4 @@
-//固定总量代币
+//有封顶代币
 const ERC20WithCapped = artifacts.require("ERC20WithCapped"); 
 
 module.exports = function(deployer) {

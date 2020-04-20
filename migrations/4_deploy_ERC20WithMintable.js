@@ -1,4 +1,4 @@
-//可销毁代币
+//可增发代币
 const ERC20WithMintable = artifacts.require("ERC20WithMintable"); 
 
 module.exports = function(deployer) {

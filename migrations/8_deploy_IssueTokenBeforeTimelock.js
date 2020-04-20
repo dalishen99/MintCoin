@@ -1,3 +1,4 @@
+//可以将ERC20FixedSupply替换成自己想要布署的合约名称
 const ERC20FixedSupply = artifacts.require("ERC20FixedSupply");
 const IssueTokenBeforeTimelock = artifacts.require("ERC20WithTokenTimelock");
 

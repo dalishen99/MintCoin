@@ -1,4 +1,4 @@
-//固定总量代币
+//可暂停代币
 const ERC20WithPausable = artifacts.require("ERC20WithPausable"); 
 
 module.exports = function(deployer) {

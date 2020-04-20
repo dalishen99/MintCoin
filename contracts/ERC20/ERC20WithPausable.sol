@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
 
-//可销毁代币
+//可暂停代币
 contract ERC20WithPausable is ERC20, ERC20Detailed, ERC20Pausable {
     constructor(
         string memory name, //代币名称

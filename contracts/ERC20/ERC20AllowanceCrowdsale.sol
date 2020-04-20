@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import "@openzeppelin/contracts/crowdsale/Crowdsale.sol";
 import "@openzeppelin/contracts/crowdsale/emission/AllowanceCrowdsale.sol";
 
-//普通的众筹
+//通用众筹合约
 contract ERC20AllowanceCrowdsale is Crowdsale, AllowanceCrowdsale {
     constructor(
         uint256 rate,           // 兑换比例
