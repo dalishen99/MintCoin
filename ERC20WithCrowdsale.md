@@ -8,7 +8,7 @@
 ### 0.固定总量代币和通用众筹合约
 > 所有的众筹合约都要在一个ERC20代币布署成功后再布署众筹合约
 ```
-./contract/ERC20FixedSupply.sol
+./contract/ERC20/ERC20FixedSupply.sol
 ```
 > 布署合约时设定
 ```javascript
@@ -27,7 +27,7 @@ buyTokens(address beneficiary) public nonReentrant payable  //购买代币,代�
 
 ### 1.普通的众筹
 ```
-./contract/ERC20AllowanceCrowdsale.sol
+./contract/ERC20/ERC20AllowanceCrowdsale.sol
 ```
 > 布署合约时设定
 ```javascript
@@ -43,7 +43,7 @@ remainingTokens() public view returns (uint256)             //检查配额中剩
 > 代币发行时可以设置一个初始总量,也可以设置为0,
 > 当代币以指定的兑换比例销售时才铸造代币,销售多少铸造多少.
 ```
-./contract/ERC20MintedCrowdsale.sol
+./contract/ERC20/ERC20MintedCrowdsale.sol
 ```
 > 布署合约时设定
 ```javascript
