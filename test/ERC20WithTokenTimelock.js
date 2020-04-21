@@ -57,7 +57,7 @@ contract('ERC20WithTokenTimelock', accounts => {
             ERC20WithTokenTimelockInstanceBlance = await ERC20FixedSupplyInstance.balanceOf(ERC20WithTokenTimelockInstance.address);
             assert.equal(0, web3.utils.fromWei(ERC20WithTokenTimelockInstanceBlance, 'ether'));
             done();
-        }, timelock * 1000);
+        }, timelock * 1000 + 1000);
     });
 
 });

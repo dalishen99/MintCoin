@@ -1,6 +1,6 @@
 # MintCoin崔棉大师的花式发币法
 
-## 铸造式众筹合约
+## 铸造式众筹
 
 > 代币发行时可以设置一个初始总量,也可以设置为0,当代币以指定的兑换比例销售时才铸造代币,销售多少铸造多少.
 
@@ -13,7 +13,7 @@
 
 [测试脚本: ERC20MintedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20MintedCrowdsale.js)
 
-[布署脚本: 10_deploy_ERC20MintedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/10_deploy_ERC20MintedCrowdsale.js)
+[布署脚本: 10_deploy_MintedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/10_deploy_MintedCrowdsale.js)
 
 ### 在布署合约时定义以下变量
 ```javascript

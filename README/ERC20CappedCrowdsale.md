@@ -1,6 +1,6 @@
 # MintCoin崔棉大师的花式发币法
 
-## 有封顶众筹合约
+## 有封顶众筹
 > 众筹代币是指在代币发行后,任何一个地址都可以向众筹地址使用ETH购买代币.
 
 > 代币和ETH的兑换比例在合约布署同时设定.
@@ -11,7 +11,7 @@
 
 [测试脚本: ERC20CappedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20CappedCrowdsale.js)
 
-[布署脚本: 11_deploy_ERC20CappedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/11_deploy_ERC20CappedCrowdsale.js)
+[布署脚本: 11_deploy_CappedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/11_deploy_CappedCrowdsale.js)
 
 ### 在布署合约时定义以下变量
 ```javascript

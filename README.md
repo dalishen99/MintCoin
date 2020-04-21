@@ -13,6 +13,8 @@
 - [通用众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20AllowanceCrowdsale.md)
 - [铸造式众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20MintedCrowdsale.md)
 - [有封顶众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20CappedCrowdsale.md)
+- [有配额的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20IndividuallyCappedCrowdsale.md)
+- [可暂停的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20PausableCrowdsale.md)
 ---
 ### 安装
 ```shell

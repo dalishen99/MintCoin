@@ -80,6 +80,6 @@ contract('ERC20WithPausable', accounts => {
     it('Testing ERC20WithPausable renouncePauser', async () => {
         await Instance.renouncePauser({from:accounts[1]});
         isPauser = await Instance.isPauser(accounts[1]);
-        assert.ok(!isMinter);
+        assert.ok(!isPauser);
     });
 });
