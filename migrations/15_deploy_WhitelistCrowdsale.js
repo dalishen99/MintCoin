@@ -1,6 +1,6 @@
 //可以将ERC20FixedSupply替换成自己想要布署的合约名称
 const ERC20FixedSupply = artifacts.require("ERC20FixedSupply");
-const ERC20IndividuallyCappedCrowdsale = artifacts.require("ERC20IndividuallyCappedCrowdsale");
+const ERC20WhitelistCrowdsale = artifacts.require("ERC20WhitelistCrowdsale");
 
 module.exports = function (deployer, network, accounts) {
   const totalSupply = 1000000000;                 //发行量
@@ -10,15 +10,15 @@ module.exports = function (deployer, network, accounts) {
     18,               //精度    
     totalSupply       //发行量
   ).then((ERC20FixedSupplyInstance) => {
-    return deployer.deploy(ERC20IndividuallyCappedCrowdsale,   
+    return deployer.deploy(ERC20WhitelistCrowdsale,   
       100,                        //兑换比例1ETH:100ERC20
       accounts[1],                //接收ETH受益人地址
       ERC20FixedSupply.address,   //代币地址
       accounts[0]                 //代币从这个地址发送
-    ).then(() => {
+    ).then((ERC20WhitelistCrowdsaleInstance) => {
       //在布署之后必须将发送者账户中的代币批准给众筹合约
       //totalSupply 是批准数量,默认是全部代币数量,你可以调整成自己需要的
-      ERC20FixedSupplyInstance.approve(ERC20IndividuallyCappedCrowdsale.address, web3.utils.toWei(totalSupply.toString(),'ether'));
+      ERC20FixedSupplyInstance.approve(ERC20WhitelistCrowdsale.address, web3.utils.toWei(totalSupply.toString(),'ether'));
     });
   })
 };

@@ -48,16 +48,8 @@ contract('ERC20WithTokenTimelock', accounts => {
     });
 
 
-    it('Testing ERC20WithTokenTimelock release', (done) => {
-        console.log('  Waiting for release in ' + timelock + ' second ......')
-        setTimeout(async () => {
-            await ERC20WithTokenTimelockInstance.release();
-            const account1Blance = await ERC20FixedSupplyInstance.balanceOf(accounts[1]);
-            assert.equal(amount, web3.utils.fromWei(account1Blance, 'ether'));
-            ERC20WithTokenTimelockInstanceBlance = await ERC20FixedSupplyInstance.balanceOf(ERC20WithTokenTimelockInstance.address);
-            assert.equal(0, web3.utils.fromWei(ERC20WithTokenTimelockInstanceBlance, 'ether'));
-            done();
-        }, timelock * 1000 + 1000);
+    it('Testing ERC20WithTokenTimelock release', async () => {
+        await assert.rejects(ERC20WithTokenTimelockInstance.release(),/current time is before release time/);
     });
 
 });

@@ -14,7 +14,7 @@ module.exports = function (deployer, network, accounts) {
       100,                        //兑换比例1ETH:100ERC20
       accounts[1],                //接收ETH受益人地址
       ERC20FixedSupply.address,   //代币地址
-      accounts[0],                //代币从这个地址发送
+      accounts[0]                 //代币从这个地址发送
     ).then(() => {
       //在布署之后必须将发送者账户中的代币批准给众筹合约
       //totalSupply 是批准数量,默认是全部代币数量,你可以调整成自己需要的

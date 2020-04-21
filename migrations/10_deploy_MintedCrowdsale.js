@@ -12,7 +12,7 @@ module.exports = function (deployer, network, accounts) {
     return deployer.deploy(ERC20MintedCrowdsale,   
       100,                        //兑换比例
       accounts[0],                //接收ETH受益人地址
-      ERC20WithMintable.address,  //代币地址
+      ERC20WithMintable.address   //代币地址
     ).then(() => {
       ERC20WithMintableInstance.addMinter(ERC20MintedCrowdsale.address);
       ERC20WithMintableInstance.renounceMinter();
