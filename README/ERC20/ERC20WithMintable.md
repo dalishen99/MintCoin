@@ -2,9 +2,9 @@
 
 ## 可增发代币
 
-[合约文件: ERC20WithMintable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithMintable.sol)
+[合约文件: WithMintable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithMintable.sol)
 
-[测试脚本: ERC20WithMintable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithMintable.js)
+[测试脚本: WithMintable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithMintable.js)
 
 [布署脚本: 4_deploy_ERC20WithMintable.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/4_deploy_ERC20WithMintable.js)
 

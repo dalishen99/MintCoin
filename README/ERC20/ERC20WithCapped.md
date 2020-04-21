@@ -2,9 +2,9 @@
 
 ## 有封顶代币
 
-[合约文件: ERC20WithCapped.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithCapped.sol)
+[合约文件: WithCapped.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithCapped.sol)
 
-[测试脚本: ERC20WithCapped.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithCapped.js)
+[测试脚本: WithCapped.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithCapped.js)
 
 [布署脚本: 5_deploy_ERC20WithCapped.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/5_deploy_ERC20WithCapped.js)
 

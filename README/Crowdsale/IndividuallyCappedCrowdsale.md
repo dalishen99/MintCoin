@@ -9,9 +9,9 @@
 
 > 有配额的众筹是指购买代币的账户必须在设置配额后才可以购买代币
 
-[合约文件: ERC20IndividuallyCappedCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/IndividuallyCappedCrowdsale.sol)
+[合约文件: IndividuallyCappedCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/IndividuallyCappedCrowdsale.sol)
 
-[测试脚本: ERC20IndividuallyCappedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/IndividuallyCappedCrowdsale.js)
+[测试脚本: IndividuallyCappedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/IndividuallyCappedCrowdsale.js)
 
 [布署脚本: 12_deploy_IndividuallyCappedCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/12_deploy_IndividuallyCappedCrowdsale.js)
 

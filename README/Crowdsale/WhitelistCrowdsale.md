@@ -9,9 +9,9 @@
 
 > 白名单众筹是指只能被加入到白名单的账户才可以参与购买代币的众筹
 
-[合约文件: ERC20WhitelistCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/WhitelistCrowdsale.sol)
+[合约文件: WhitelistCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/WhitelistCrowdsale.sol)
 
-[测试脚本: ERC20WhitelistCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/WhitelistCrowdsale.js)
+[测试脚本: WhitelistCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/WhitelistCrowdsale.js)
 
 [布署脚本: 15_deploy_WhitelistCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/15_deploy_WhitelistCrowdsale.js)
 

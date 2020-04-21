@@ -7,9 +7,9 @@
 
 > 所有的众筹合约都要在一个ERC20代币布署成功后再布署众筹合约,布署脚本中已经设置了一个固定总量的众筹合约
 
-[合约文件: ERC20PausableCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/PausableCrowdsale.sol)
+[合约文件: PausableCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/PausableCrowdsale.sol)
 
-[测试脚本: ERC20PausableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/PausableCrowdsale.js)
+[测试脚本: PausableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/PausableCrowdsale.js)
 
 [布署脚本: 13_deploy_PausableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/13_deploy_PausableCrowdsale.js)
 

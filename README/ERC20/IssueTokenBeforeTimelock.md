@@ -8,9 +8,9 @@
 
 > 为了运行本示例,布署脚本中直接实例化了刚布署的ERC20合约.
 
-[合约文件: ERC20WithTokenTimelock.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithTokenTimelock.sol)
+[合约文件: WithTokenTimelock.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithTokenTimelock.sol)
 
-[测试脚本: ERC20WithTokenTimelock.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithTokenTimelock.js)
+[测试脚本: WithTokenTimelock.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithTokenTimelock.js)
 
 [布署脚本: 8_deploy_IssueTokenBeforeTimelock.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/8_deploy_IssueTokenBeforeTimelock.js)
 
