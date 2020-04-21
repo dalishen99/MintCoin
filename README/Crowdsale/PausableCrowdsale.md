@@ -1,19 +1,17 @@
 # MintCoin崔棉大师的花式发币法
 
-## 白名单众筹
+## 可暂停的众筹
 > 众筹代币是指在代币发行后,任何一个地址都可以向众筹地址使用ETH购买代币.
 
 > 代币和ETH的兑换比例在合约布署同时设定.
 
 > 所有的众筹合约都要在一个ERC20代币布署成功后再布署众筹合约,布署脚本中已经设置了一个固定总量的众筹合约
 
-> 白名单众筹是指只能被加入到白名单的账户才可以参与购买代币的众筹
+[合约文件: ERC20PausableCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/PausableCrowdsale.sol)
 
-[合约文件: ERC20WhitelistCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/ERC20WhitelistCrowdsale.sol)
+[测试脚本: ERC20PausableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/PausableCrowdsale.js)
 
-[测试脚本: ERC20WhitelistCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/ERC20WhitelistCrowdsale.js)
-
-[布署脚本: 15_deploy_WhitelistCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/15_deploy_WhitelistCrowdsale.js)
+[布署脚本: 13_deploy_PausableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/13_deploy_PausableCrowdsale.js)
 
 ### 在布署合约时定义以下变量
 ```javascript
@@ -44,18 +42,16 @@ buyTokens(address beneficiary) public nonReentrant payable
 tokenWallet() public view returns (address)                 
 //检查配额中剩余的代币数量
 remainingTokens() public view returns (uint256)
-//返回指定账户是否在白名单
-isWhitelisted(address account) public view returns (bool)
-//添加指定账户到白名单
-addWhitelisted(address account) public onlyWhitelistAdmin
-//从白名单移除指定账户
-removeWhitelisted(address account) public onlyWhitelistAdmin
-//从白名单撤销自己的账户
-renounceWhitelisted() public
-//返回指定账户是否是白名单管理员
-isWhitelistAdmin(address account) public view returns (bool)
-//添加指定账户到白名单管理员
-addWhitelistAdmin(address account) public onlyWhitelistAdmin
-//从白名单管理员撤销自己的账户
-renounceWhitelistAdmin() public
+//返回指定地址是否拥有暂停权 
+isPauser(address account) public view returns (bool)       
+//给指定地址添加暂停权限,只有通过有暂停权的地址添加
+addPauser(address account) public onlyPauser              
+//撤销当前发送账户的暂停权
+renouncePauser() public        
+//返回合约当前是否已经暂停                           
+paused() public view returns (bool)                    
+//暂停合约   
+pause() public onlyPauser whenNotPaused         
+//恢复合约          
+unpause() public onlyPauser whenPaused                   
 ```
