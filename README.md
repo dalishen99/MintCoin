@@ -1,22 +1,22 @@
 # MintCoin崔棉大师的花式发币法
 
 ### 发行ERC20代币
-- [固定总量代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20FixedSupply.md)
-- [可销毁代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithBurnable.md)
-- [可增发代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithMintable.md)
-- [有封顶代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithCapped.md)
-- [可暂停代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WithPausable.md)
+- [固定总量代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/ERC20FixedSupply.md)
+- [可销毁代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/ERC20WithBurnable.md)
+- [可增发代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/ERC20WithMintable.md)
+- [有封顶代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/ERC20WithCapped.md)
+- [可暂停代币](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/ERC20WithPausable.md)
 ### 发行锁仓代币
-- [发行代币同时锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/IssueTokenWithTimelock.md)
-- [发行代币之后锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/IssueTokenBeforeTimelock.md)
+- [发行代币同时锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/IssueTokenWithTimelock.md)
+- [发行代币之后锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/IssueTokenBeforeTimelock.md)
 ### 发行众筹代币
-- [通用众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20AllowanceCrowdsale.md)
-- [铸造式众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20MintedCrowdsale.md)
-- [有封顶众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20CappedCrowdsale.md)
-- [有配额的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20IndividuallyCappedCrowdsale.md)
-- [可暂停的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20PausableCrowdsale.md)
-- [有时限的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20TimedCrowdsale.md)
-- [白名单众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20WhitelistCrowdsale.md)
+- [通用众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/ERC20AllowanceCrowdsale.md)
+- [铸造式众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/ERC20MintedCrowdsale.md)
+- [有封顶众筹合约](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/ERC20CappedCrowdsale.md)
+- [有配额的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/ERC20IndividuallyCappedCrowdsale.md)
+- [可暂停的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/ERC20PausableCrowdsale.md)
+- [有时限的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/ERC20TimedCrowdsale.md)
+- [白名单众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/ERC20WhitelistCrowdsale.md)
 ---
 ### 安装
 ```shell

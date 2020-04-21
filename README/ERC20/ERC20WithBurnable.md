@@ -1,12 +1,12 @@
 # MintCoin崔棉大师的花式发币法
 
-## 可暂停代币
+## 可销毁代币
 
-[合约文件: ERC20WithPausable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithPausable.sol)
+[合约文件: ERC20WithBurnable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithBurnable.sol)
 
-[测试脚本: ERC20WithPausable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20WithPausable.js)
+[测试脚本: ERC20WithBurnable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithBurnable.js)
 
-[布署脚本: 6_deploy_ERC20WithPausable.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/6_deploy_ERC20WithPausable.js)
+[布署脚本: 3_deploy_ERC20WithBurnable.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/3_deploy_ERC20WithBurnable.js)
 
 ### 在布署合约时定义以下变量
 ```javascript
@@ -30,16 +30,8 @@ approve(address spender, uint256 amount) external returns (bool)
 //spender调用这个函数发送sender账户中的amount数量的代币给recipient
 transferFrom(address sender, address recipient, uint256 amount) external returns (bool)
 //特殊方法
-//返回指定地址是否拥有暂停权 
-isPauser(address account) public view returns (bool)       
-//给指定地址添加暂停权限,只有通过有暂停权的地址添加
-addPauser(address account) public onlyPauser              
-//撤销当前发送账户的暂停权
-renouncePauser() public        
-//返回合约当前是否已经暂停                           
-paused() public view returns (bool)                    
-//暂停合约   
-pause() public onlyPauser whenNotPaused         
-//恢复合约          
-unpause() public onlyPauser whenPaused                    
+//调用此方法可以从调用者账户中销毁代币
+burn(uint256 amount) public 
+//调用此方法可以从指定地址销毁代币,代币从发送者的批准中扣除
+burnFrom(address account, uint256 amount) public 
 ```
