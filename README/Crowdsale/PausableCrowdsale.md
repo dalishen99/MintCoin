@@ -5,7 +5,7 @@
 
 > 代币和ETH的兑换比例在合约布署同时设定.
 
-> 所有的众筹合约都要在一个ERC20代币布署成功后再布署众筹合约,布署脚本中已经设置了一个固定总量的众筹合约
+> 所有的众筹合约都要在一个ERC20代币布署成功后再布署众筹合约,布署脚本中已经设置了一个固定总量的ERC20合约
 
 [合约文件: PausableCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/PausableCrowdsale.sol)
 

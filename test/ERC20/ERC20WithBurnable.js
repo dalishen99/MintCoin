@@ -1,5 +1,6 @@
 const assert = require('assert');
 const ERC20WithBurnable = artifacts.require("ERC20WithBurnable"); 
+const {ERC20} = require('./ERC20');
 
 contract('ERC20WithBurnable', accounts => {
     before(async () => {
@@ -10,20 +11,9 @@ contract('ERC20WithBurnable', accounts => {
             1000000000          //发行总量
         );
     });
-    it('Testing ERC20WithBurnable Detail', async () => {
 
-        const symbol = await Instance.symbol();
-        const name = await Instance.name();
-        const decimals = await Instance.decimals();
-        const totalSupply = await Instance.totalSupply();
-        const creatorBalance = await Instance.balanceOf(accounts[0]);
-        const noCreatorBalance = await Instance.balanceOf(accounts[1]);
-
-        assert.equal('My Golden Coin', name);
-        assert.equal('MGC', symbol);
-        assert.equal('18', decimals.toString());
-        assert.equal(web3.utils.fromWei(totalSupply,'ether'), web3.utils.fromWei(creatorBalance,'ether'));
-        assert.equal(noCreatorBalance, '0');
+    it('Testing ERC20FixedSupply Detail', async () => {
+        await ERC20(Instance,accounts);
     });
 
     it('Testing ERC20WithBurnable transfer', async () => {
@@ -42,6 +32,18 @@ contract('ERC20WithBurnable', accounts => {
         await Instance.transferFrom(accounts[0],accounts[3],web3.utils.toWei('100','ether'),{from:accounts[2]});
         const account3Balance = await Instance.balanceOf(accounts[3]);
         assert.equal(100, web3.utils.fromWei(account3Balance,'ether'));
+    });
+    
+    it('Testing ERC20FixedSupply increaseAllowance', async () => {
+        await Instance.increaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
+        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
+        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
+    });
+    
+    it('Testing ERC20FixedSupply decreaseAllowance', async () => {
+        await Instance.decreaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
+        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
+        assert.equal(0, web3.utils.fromWei(account2Allowance,'ether'));
     });
 
     it('Testing ERC20WithBurnable burn', async () => {

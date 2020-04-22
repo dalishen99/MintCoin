@@ -7,8 +7,6 @@ module.exports = (deployer, network, accounts) => {
     const totalSupply = 1000000000;  
     //锁仓总量
     const amount = 1000;  
-    //解锁时间戳
-    const timelock = parseInt(new Date().getTime() / 1000 + 60)
     deployer.deploy(ERC20FixedSupply,
         //构造函数的参数
         "My Golden Coin",   //代币名称
@@ -18,9 +16,9 @@ module.exports = (deployer, network, accounts) => {
     )
         .then((ERC20FixedSupplyInstance) => {
             return deployer.deploy(IssueTokenWithTimelock,
-                ERC20FixedSupplyInstance.address,   //ERC20代币合约地址
-                accounts[0],                        //受益人为当前账户
-                timelock                            //解锁时间戳
+                ERC20FixedSupplyInstance.address,           //ERC20代币合约地址
+                accounts[0],                                //受益人为当前账户
+                parseInt(new Date().getTime() / 1000 + 60)  //解锁时间戳
             ).then((IssueTokenWithTimelockInstance) => {
                 //将代币转移到锁仓合约的账户中
                 ERC20FixedSupplyInstance.transfer(IssueTokenWithTimelockInstance.address, web3.utils.toWei(amount.toString(),'ether'));

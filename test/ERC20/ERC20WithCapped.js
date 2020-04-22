@@ -1,5 +1,6 @@
 const assert = require('assert');
 const ERC20WithCapped = artifacts.require("ERC20WithCapped"); 
+const {ERC20} = require('./ERC20');
 
 contract('ERC20WithCapped', accounts => {
     before(async () => {
@@ -11,22 +12,39 @@ contract('ERC20WithCapped', accounts => {
             1000000000          //封顶上限
         );
     });
-    it('Testing ERC20WithCapped Detail', async () => {
+    
+    it('Testing ERC20FixedSupply Detail', async () => {
+        await ERC20(Instance,accounts);
+    });
 
-        const symbol = await Instance.symbol();
-        const name = await Instance.name();
-        const decimals = await Instance.decimals();
-        const totalSupply = await Instance.totalSupply();
-        const cap = await Instance.cap();
-        const creatorBalance = await Instance.balanceOf(accounts[0]);
-        const noCreatorBalance = await Instance.balanceOf(accounts[1]);
+    it('Testing ERC20FixedSupply transfer', async () => {
+        await Instance.transfer(accounts[1],web3.utils.toWei('100','ether'),{from:accounts[0]});
+        const account1Balance = await Instance.balanceOf(accounts[1]);
+        assert.equal(100, web3.utils.fromWei(account1Balance,'ether'));
+    });
 
-        assert.equal('My Golden Coin', name);
-        assert.equal('MGC', symbol);
-        assert.equal('18', decimals.toString());
-        assert.equal(web3.utils.fromWei(totalSupply,'ether'), web3.utils.fromWei(creatorBalance,'ether'));
-        assert.equal(noCreatorBalance, '0');
-        assert.equal(cap, web3.utils.toWei('1000000000','ether'));
+    it('Testing ERC20FixedSupply approve allowance', async () => {
+        await Instance.approve(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
+        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
+        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
+    });
+    
+    it('Testing ERC20FixedSupply transferFrom', async () => {
+        await Instance.transferFrom(accounts[0],accounts[3],web3.utils.toWei('100','ether'),{from:accounts[2]});
+        const account3Balance = await Instance.balanceOf(accounts[3]);
+        assert.equal(100, web3.utils.fromWei(account3Balance,'ether'));
+    });
+    
+    it('Testing ERC20FixedSupply increaseAllowance', async () => {
+        await Instance.increaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
+        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
+        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
+    });
+    
+    it('Testing ERC20FixedSupply decreaseAllowance', async () => {
+        await Instance.decreaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
+        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
+        assert.equal(0, web3.utils.fromWei(account2Allowance,'ether'));
     });
 
     it('Testing ERC20WithMintable cap', async () => {

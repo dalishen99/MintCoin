@@ -13,17 +13,13 @@ contract('ERC20TimedCrowdsale', accounts => {
             18,                 //精度
             totalSupply         //发行总量
         );
-        //众筹开始时间
-        openingTime = parseInt(new Date().getTime() / 1000)
-        //众筹结束时间
-        closingTime = parseInt(new Date().getTime() / 1000 + timelock)
         ERC20TimedCrowdsaleInstance = await ERC20TimedCrowdsale.new(
             rate,                               //兑换比例1ETH:100ERC20
             accounts[1],                        //接收ETH受益人地址
             ERC20FixedSupplyInstance.address,   //代币地址
             accounts[0],                        //代币从这个地址发送
-            openingTime,                        //众筹开始时间
-            closingTime                         //众筹结束时间
+            parseInt(new Date().getTime() / 1000),             //众筹开始时间
+            parseInt(new Date().getTime() / 1000 + timelock)   //众筹结束时间
         );
         //在布署之后必须将发送者账户中的代币批准给众筹合约
         await ERC20FixedSupplyInstance.approve(ERC20TimedCrowdsaleInstance.address, web3.utils.toWei(totalSupply.toString(), 'ether'));
@@ -49,12 +45,8 @@ contract('ERC20TimedCrowdsale', accounts => {
         assert.equal(accounts[0], tokenWallet);
     });
 
-    it('Testing ERC20TimedCrowdsale openingTime', async () => {
-        assert.equal(openingTime, await ERC20TimedCrowdsaleInstance.openingTime());
-    });
-
-    it('Testing ERC20TimedCrowdsale closingTime', async () => {
-        assert.equal(closingTime, await ERC20TimedCrowdsaleInstance.closingTime());
+    it('Testing ERC20TimedCrowdsale openingTime closingTime', async () => {
+        assert.ok(await ERC20TimedCrowdsaleInstance.closingTime() > await ERC20TimedCrowdsaleInstance.openingTime());
     });
 
     it('Testing ERC20TimedCrowdsale isOpen', async () => {

@@ -17,6 +17,9 @@
 - [可暂停的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/PausableCrowdsale.md)
 - [有时限的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/TimedCrowdsale.md)
 - [白名单众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/WhitelistCrowdsale.md)
+- [可终结的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/FinalizableCrowdsale.md)
+- [成功后交付的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/PostDeliveryCrowdsale.md)
+- [不成功退款的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/RefundableCrowdsale.md)
 ---
 ### 安装
 ```shell

@@ -18,6 +18,12 @@ uint256 cap             //封顶数量
 ```
 ### 调用方法
 ```javascript
+//返回代币名称
+name() public view returns (string memory)
+//返回代币缩写
+symbol() public view returns (string memory)
+//返回代币精度
+decimals() public view returns (uint8)
 //返回发行总量
 totalSupply() external view returns (uint256)
 //返回指定地址的余额
@@ -30,6 +36,10 @@ allowance(address owner, address spender) external view returns (uint256)
 approve(address spender, uint256 amount) external returns (bool)
 //spender调用这个函数发送sender账户中的amount数量的代币给recipient
 transferFrom(address sender, address recipient, uint256 amount) external returns (bool)
+//增加给予spender的配额
+increaseAllowance(address spender, uint256 addedValue) public returns (bool)
+//减少给予spender的配额
+decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool)
 //特殊方法
 //返回封顶数量
 cap() public view returns (uint256)     

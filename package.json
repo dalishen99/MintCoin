@@ -17,7 +17,7 @@
     "test": "DEBUG=GasUsed truffle test",
     "migrate": "truffle migrate",
     "compile": "truffle compile",
-    "node": "ganache-cli -l 0x1fffffffffffff -g 1 --allowUnlimitedContractSize "
+    "node": "ganache-cli -l 0x1fffffffffffff -g 1 --allowUnlimitedContractSize -e 1000"
   },
   "keywords": [],
   "author": "",
