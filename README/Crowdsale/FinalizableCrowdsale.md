@@ -13,7 +13,7 @@
 
 [测试脚本: FinalizableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/FinalizableCrowdsale.js)
 
-[布署脚本: 14_deploy_FinalizableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/14_deploy_FinalizableCrowdsale.js)
+[布署脚本: 16_deploy_FinalizableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/16_deploy_FinalizableCrowdsale.js)
 
 ### 额外增加
 > 在FinalizableCrowdsale.sol合约文件中可以设置一个结束众筹的方法,因为是内部函数,所以只能在合约文件中设置.

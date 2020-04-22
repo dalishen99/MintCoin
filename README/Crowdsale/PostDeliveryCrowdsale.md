@@ -13,7 +13,7 @@
 
 [测试脚本: PostDeliveryCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/PostDeliveryCrowdsale.js)
 
-[布署脚本: 14_deploy_PostDeliveryCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/14_deploy_PostDeliveryCrowdsale.js)
+[布署脚本: 17_deploy_PostDeliveryCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/17_deploy_PostDeliveryCrowdsale.js)
 
 ### 在布署合约时定义以下变量
 ```javascript

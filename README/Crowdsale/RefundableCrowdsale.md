@@ -17,7 +17,7 @@
 
 [测试脚本2(没到达众筹目标): RefundableCrowdsaleNotReach.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/RefundableCrowdsaleNotReach.js)
 
-[布署脚本: 14_deploy_RefundableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/14_deploy_RefundableCrowdsale.js)
+[布署脚本: 18_deploy_RefundableCrowdsale.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/18_deploy_RefundableCrowdsale.js)
 
 ### 在布署合约时定义以下变量
 ```javascript
