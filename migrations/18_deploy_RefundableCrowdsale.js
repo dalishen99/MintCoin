@@ -15,7 +15,7 @@ module.exports = function (deployer, network, accounts) {
       accounts[1],                //接收ETH受益人地址
       ERC20FixedSupply.address,   //代币地址
       accounts[0],                //代币从这个地址发送
-      parseInt(new Date().getTime() / 1000),      //众筹开始时间
+      parseInt(new Date().getTime() / 1000) + 5,      //众筹开始时间
       parseInt(new Date().getTime() / 1000 + 300), //众筹结束时间
       web3.utils.toWei('20', 'ether')           //众筹目标
     ).then(() => {

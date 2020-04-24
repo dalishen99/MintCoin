@@ -2,7 +2,7 @@ const ERC20Contract = artifacts.require("ERC20FixedSupply");
 const ERC20 = require('./ERC20');
 
 contract('固定总量代币', accounts => {
-    describe("布署合约...",async () => {
+    describe("布署合约...",async function () {
         const param = [
             "My Golden Coin",   //代币名称
             "MGC",              //代币缩写

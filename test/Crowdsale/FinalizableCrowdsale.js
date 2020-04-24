@@ -1,61 +1,89 @@
 const assert = require('assert');
 const CrowdsaleContract = artifacts.require("ERC20FinalizableCrowdsale");
 const ERC20Contract = artifacts.require("ERC20FixedSupply");
-const ERC20 = require('../ERC20/ERC20');
 const Crowdsale = require('./Crowdsale');
 
 contract('可终结的众筹', async (accounts) => {
     totalSupply = 1000000000;//发行总量
-    describe("布署ERC20合约...", async () => {
+    before("布署ERC20合约...", async function() {
         const param = [
             "My Golden Coin",   //代币名称
             "MGC",              //代币缩写
             18,                 //精度
             totalSupply         //发行总量
         ];
-        //测试ERC20合约的基本方法
-        ERC20Instance = await ERC20(accounts, ERC20Contract, param);
+        ERC20Instance = await ERC20Contract.new(...param);
     });
-    describe("布署可终结的众筹合约...", async () => {
+    describe("布署可终结的众筹合约...", async function() {
         rate = 100;//兑换比例1ETH:100ERC20
-        timestamp = Math.ceil(new Date().getTime() / 1000);
-        openingTime = timestamp + 5;
-        closingTime = openingTime + 10;
+        it('布署合约并且批准给众筹账户', async function() {
+            CrowdsaleInstance = await CrowdsaleContract.new(
+                rate,                               //兑换比例1ETH:100ERC20
+                accounts[1],                        //接收ETH受益人地址
+                ERC20Instance.address,              //代币地址
+                accounts[0],                        //代币从这个地址发送
+                Math.ceil(new Date().getTime() / 1000) + 5,   //众筹开始时间
+                Math.ceil(new Date().getTime() / 1000) + 15   //众筹结束时间
+            );
+            //在布署之后必须将发送者账户中的代币批准给众筹合约
+            await ERC20Instance.approve(CrowdsaleInstance.address, web3.utils.toWei(totalSupply.toString(), 'ether'));
+        });
         //测试通用的众筹合约
-        const CrowdsaleParam = [
-            openingTime,    //众筹开始时间
-            closingTime     //众筹结束时间
-        ]
-        console.log(CrowdsaleParam)
-        CrowdsaleInstance = await Crowdsale(accounts, CrowdsaleContract, rate, CrowdsaleParam);
+        await Crowdsale(accounts, rate, true);
     });
-    // describe("测试可终结众筹合约的特殊方法", () => {
-
-    //     it('Testing ERC20TimedCrowdsale openingTime closingTime', async () => {
-    //         openingTime = await CrowdsaleInstance.openingTime();
-    //         closingTime = await CrowdsaleInstance.closingTime();
-    //         assert.ok(openingTime.toString() < closingTime.toString());
-    //     });
-
-    //     it('Testing ERC20FinalizableCrowdsale isOpen', async () => {
-    //         assert.ok(await CrowdsaleInstance.isOpen());
-    //     });
-
-    //     it('Testing ERC20FinalizableCrowdsale hasClosed', async () => {
-    //         assert.ok(!await CrowdsaleInstance.hasClosed());
-    //     });
-
-    //     it('Testing ERC20FinalizableCrowdsale finalized', async () => {
-    //         assert.ok(!await CrowdsaleInstance.finalized());
-    //     });
-
-    //     it('Testing ERC20FinalizableCrowdsale finalize', (done) => {
-    //         console.log('Waiting for ' + timelock + ' seconds ......')
-    //         setTimeout(async () => {
-    //             await CrowdsaleInstance.finalize();
-    //             assert.ok(await CrowdsaleInstance.finalized());
-    //             done();
-    //         }, timelock * 1000);
-    //     });
-    // });
+    describe("测试可终结众筹合约的特殊方法", function() {
+        //测试开始时间
+        it('开始时间: openingTime()', async function() {
+            assert.doesNotReject(await CrowdsaleInstance.openingTime());
+        });
+        //测试结束时间
+        it('结束时间: closingTime()', async function() {
+            assert.doesNotReject(await CrowdsaleInstance.closingTime());
+        });
+        //测试众筹是否开始,未开始
+        it('众筹未开始: isOpen()', async function() {
+            assert.ok(!await CrowdsaleInstance.isOpen());
+        });
+        //测试众筹是否关闭,未关闭
+        it('众筹未关闭: hasClosed()', async function() {
+            assert.ok(!await CrowdsaleInstance.hasClosed());
+        });
+        //重新测试购买代币方法
+        it('重新测试购买代币方法: buyTokens()', function (done) {
+            console.log('  Waiting for 10 seconds ......')
+            setTimeout(async function () {
+                await CrowdsaleInstance.buyTokens(accounts[2], { value: web3.utils.toWei('10', 'ether') });
+                assert.equal(10 * rate, web3.utils.fromWei(amount = await ERC20Instance.balanceOf(accounts[2]), 'ether'));
+                done();
+            }, 10000);
+        });
+        //重新测试众筹收入
+        it('重新测试众筹收入: weiRaised()', async function () {
+            assert.equal(10, web3.utils.fromWei(await CrowdsaleInstance.weiRaised(), 'ether'));
+        });
+        //重新测试众筹是否开始,已开始
+        it('重新众筹已开始: isOpen()', async function() {
+            assert.ok(await CrowdsaleInstance.isOpen());
+        });
+        //测试众筹结束,未结束
+        it('众筹未结束: finalized()', async function() {
+            assert.ok(!await CrowdsaleInstance.finalized());
+        });
+        //测试众筹结束方法
+        it('众筹结束方法: finalize()', (done) => {
+            console.log('  Waiting for 10 seconds ......')
+            setTimeout(async function() {
+                assert.doesNotReject(CrowdsaleInstance.finalize());
+                done();
+            }, 10000);
+        });
+        //测试众筹结束,已结束
+        it('众筹已结束: finalized()', async function() {
+            assert.ok(await CrowdsaleInstance.finalized());
+        });
+        //测试众筹是否关闭,已关闭
+        it('众筹已关闭: hasClosed()', async function() {
+            assert.ok(await CrowdsaleInstance.hasClosed());
+        });
+    });
 });

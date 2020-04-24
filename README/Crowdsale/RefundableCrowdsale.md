@@ -11,6 +11,16 @@
 > 当众筹时间到达后,如果众筹目标没有到达,购买者可以通过claimRefund()方法退回ETH.
 > 当众筹时间到达后,如果到达了众筹目标,购买者才可以通过withdrawTokens()方法提取到ERC20代币.
 
+### 众筹规则:
+1. 兑换比例1ETH:100ERC20
+2. 代币存于accounts[0]账户
+3. 众筹获得的ETH交给accounts[1]账户
+4. 众筹开始时间是当前时间
+5. 众筹结束时间是5秒后
+6. 众筹目标是2000个ERC20
+7. 没达到众筹目标,在众筹结束后可以退款
+8. 达到众筹目标,在众筹结束后提取代币
+
 [合约文件: RefundableCrowdsale.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/Crowdsale/RefundableCrowdsale.sol)
 
 [测试脚本1(到达众筹目标): RefundableCrowdsaleReached.js](https://github.com/Fankouzu/MintCoin/blob/master/test/Crowdsale/RefundableCrowdsaleReached.js)

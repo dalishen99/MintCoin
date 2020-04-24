@@ -1,61 +1,95 @@
 const assert = require('assert');
+const CrowdsaleContract = artifacts.require("ERC20MintedCrowdsale");
 const ERC20Contract = artifacts.require("ERC20WithMintable");
-const ERC20MintedCrowdsale = artifacts.require("ERC20MintedCrowdsale");
-const ERC20 = require('../ERC20/ERC20');
 
 contract('铸造式众筹', accounts => {
-    totalSupply = 1000;
-    rate = 100;
-    describe("布署ERC20合约...", async () => {
+    const totalSupply = 1000;//发行总量
+    before("布署ERC20合约...", async function() {
         const param = [
             "My Golden Coin",   //代币名称
             "MGC",              //代币缩写
             18,                 //精度
             totalSupply         //发行总量
         ];
-        //测试ERC20合约的基本方法
-        ERC20Instance = await ERC20(accounts, ERC20Contract, param);
+        ERC20Instance = await ERC20Contract.new(...param);
     });
-    describe("布署有封顶众筹合约...", () => {
-        it('布署合约并且批准给众筹账户', async () => {
-        ERC20MintedCrowdsaleInstance = await ERC20MintedCrowdsale.new(
-            rate,                        //兑换比例
-            accounts[0],                //接收ETH受益人地址
-            ERC20Instance.address,  //代币地址
-        );
-        await ERC20Instance.addMinter(ERC20MintedCrowdsaleInstance.address);
-        await ERC20Instance.renounceMinter();
+    describe("铸造式众筹合约:", function() {
+        before(async function() {
+            rate = 100;//兑换比例1ETH:100ERC20
+            //测试铸造式众筹合约
+            //布署众筹合约
+            CrowdsaleInstance = await CrowdsaleContract.new(
+                rate,                               //兑换比例
+                accounts[1],                        //接收ETH受益人地址
+                ERC20Instance.address,              //代币地址
+            );
+        });
+        describe("布署合约后首先执行的方法", function () {
+            it('添加众筹合约的铸造权: addMinter()', function () {
+                //添加众筹合约的铸造权
+                assert.doesNotReject(ERC20Instance.addMinter(CrowdsaleInstance.address));
+            });
+            it('撤销发送者的铸造权: renounceMinter()', function () {
+                //撤销发送者的铸造权
+                assert.doesNotReject(ERC20Instance.renounceMinter());
+            });
+        });
+        describe("测试铸造式众筹合约方法", function () {
+            //测试ERC20代币地址
+            it('ERC20代币地址: token()', async function () {
+                assert.equal(ERC20Instance.address, tokenAddress = await CrowdsaleInstance.token());
+            });
+            //测试ETH受益人地址
+            it('ETH受益人地址: wallet()', async function () {
+                assert.equal(accounts[1], await CrowdsaleInstance.wallet());
+            });
+            //测试兑换比例
+            it('兑换比例: rate()', async function () {
+                assert.equal(rate, await CrowdsaleInstance.rate());
+            });
+            //测试购买代币方法
+            it('购买代币方法: buyTokens()', async function () {
+                assert.doesNotReject(
+                    CrowdsaleInstance.buyTokens(
+                        accounts[2],
+                        {
+                            value: web3.utils.toWei('10', 'ether')
+                        }
+                    )
+                );
+            });
+            //测试购买者余额
+            it('购买者余额: balanceOf()', async function () {
+                assert.equal(
+                    10 * rate,
+                    web3.utils.fromWei(
+                        await ERC20Instance.balanceOf(
+                            accounts[2]
+                        ),
+                        'ether'
+                    )
+                );
+            });
+            //测试代币发行总量
+            it('代币发行总量: totalSupply()', async function () {
+                assert.equal(
+                    10 * rate + totalSupply,
+                    web3.utils.fromWei(
+                        await ERC20Instance.totalSupply(),
+                        'ether'
+                    )
+                );
+            });
+            //测试众筹收入
+            it('众筹收入: weiRaised()', async function () {
+                assert.equal(
+                    10,
+                    web3.utils.fromWei(
+                        await CrowdsaleInstance.weiRaised(),
+                        'ether'
+                    )
+                );
+            });
+        });
     });
-});
-
-    it('Testing ERC20MintedCrowdsale token', async () => {
-        address = await ERC20MintedCrowdsaleInstance.token();
-        assert.equal(address, ERC20Instance.address);
-    });
-
-    it('Testing ERC20MintedCrowdsale wallet', async () => {
-        address = await ERC20MintedCrowdsaleInstance.wallet();
-        assert.equal(address, accounts[0]);
-    });
-
-    it('Testing ERC20MintedCrowdsale rate', async () => {
-        rate = await ERC20MintedCrowdsaleInstance.rate();
-        assert.equal(100, rate);
-    });
-
-    it('Testing ERC20MintedCrowdsale buyTokens', async () => {
-        totalSupply_before = await ERC20Instance.totalSupply();
-        assert.equal(totalSupply, web3.utils.fromWei(totalSupply_before, 'ether'));
-        await ERC20MintedCrowdsaleInstance.buyTokens(accounts[1], { value: web3.utils.toWei('10', 'ether') });
-        amount = await ERC20Instance.balanceOf(accounts[1]);
-        assert.equal(10 * rate, web3.utils.fromWei(amount, 'ether'));
-        totalSupply_after = await ERC20Instance.totalSupply();
-        assert.equal(totalSupply + 10 * rate, web3.utils.fromWei(totalSupply_after, 'ether'));
-    });
-
-    it('Testing ERC20MintedCrowdsale weiRaised', async () => {
-        weiRaised = await ERC20MintedCrowdsaleInstance.weiRaised();
-        assert.equal(10, web3.utils.fromWei(weiRaised, 'ether'));
-    });
-
 });
