@@ -1,17 +1,24 @@
 const assert = require('assert');
-const ERC20FixedSupply = artifacts.require("ERC20FixedSupply");
+const ERC20Contract = artifacts.require("ERC20FixedSupply");
 const ERC20RefundableCrowdsale = artifacts.require("ERC20RefundableCrowdsale");
+const ERC20 = require('../ERC20/ERC20');
 
-contract('ERC20RefundableCrowdsale', accounts => {
+contract('成功后退款的众筹', accounts => {
     totalSupply = 1000000000;
     rate = 100;
-    before(async () => {
-        ERC20FixedSupplyInstance = await ERC20FixedSupply.new(
+    timelock = 10;
+    describe("布署ERC20合约...", async () => {
+        const param = [
             "My Golden Coin",   //代币名称
             "MGC",              //代币缩写
             18,                 //精度
             totalSupply         //发行总量
-        );
+        ];
+        //测试ERC20合约的基本方法
+        ERC20Instance = await ERC20(accounts, ERC20Contract, param);
+    });
+    describe("布署有封顶众筹合约...", () => {
+        it('布署合约并且批准给众筹账户', async () => {
         //众筹规则:
         //1.兑换比例1ETH:100ERC20
         //2.代币存于accounts[0]账户
@@ -21,23 +28,23 @@ contract('ERC20RefundableCrowdsale', accounts => {
         //6.众筹目标是2000个ERC20
         //7.没达到众筹目标,在众筹结束后可以退款
         //8.达到众筹目标,在众筹结束后提取代币
-        timelock = 10;
         ERC20RefundableCrowdsaleInstance = await ERC20RefundableCrowdsale.new(
             rate,                               //兑换比例1ETH:100ERC20
             accounts[1],                        //接收ETH受益人地址
-            ERC20FixedSupplyInstance.address,   //代币地址
+            ERC20Instance.address,   //代币地址
             accounts[0],                        //代币从这个地址发送
             parseInt(new Date().getTime() / 1000) + 5,             //众筹开始时间
             parseInt(new Date().getTime() / 1000) + 5 + timelock,  //众筹结束时间
             web3.utils.toWei('20', 'ether')                  //众筹目标
         );
         //在布署之后必须将发送者账户中的代币批准给众筹合约
-        await ERC20FixedSupplyInstance.approve(ERC20RefundableCrowdsaleInstance.address, web3.utils.toWei(totalSupply.toString(), 'ether'));
+        await ERC20Instance.approve(ERC20RefundableCrowdsaleInstance.address, web3.utils.toWei(totalSupply.toString(), 'ether'));
     });
+});
     //验证Token地址
     it('Testing ERC20RefundableCrowdsale not reached token', async () => {
         address = await ERC20RefundableCrowdsaleInstance.token();
-        assert.equal(address, ERC20FixedSupplyInstance.address);
+        assert.equal(address, ERC20Instance.address);
     });
     //验证ETH受益人地址
     it('Testing ERC20RefundableCrowdsale not reached wallet', async () => {
@@ -65,7 +72,7 @@ contract('ERC20RefundableCrowdsale', accounts => {
         console.log('Waiting for 10 seconds ......')
         setTimeout(async () => {
             await ERC20RefundableCrowdsaleInstance.buyTokens(accounts[2], { value: web3.utils.toWei('20', 'ether') });
-            amount = await ERC20FixedSupplyInstance.balanceOf(accounts[2]);
+            amount = await ERC20Instance.balanceOf(accounts[2]);
             assert.equal(0, web3.utils.fromWei(amount, 'ether'));
             done();
         }, 10000);

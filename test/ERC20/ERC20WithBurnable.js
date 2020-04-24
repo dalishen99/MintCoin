@@ -1,64 +1,36 @@
-const assert = require('assert');
-const ERC20WithBurnable = artifacts.require("ERC20WithBurnable"); 
-const {ERC20} = require('./ERC20');
+const ERC20Contract = artifacts.require("ERC20WithBurnable");
+const ERC20 = require('./ERC20');
 
-contract('ERC20WithBurnable', accounts => {
-    before(async () => {
-        Instance = await ERC20WithBurnable.new(
+contract('可销毁代币', accounts => {
+    describe("布署合约...",async () => {
+        const param = [
             "My Golden Coin",   //代币名称
             "MGC",              //代币缩写
             18,                 //精度
             1000000000          //发行总量
-        );
+        ];
+        //测试ERC20合约的基本方法
+        ERC20Instance = await ERC20(accounts, ERC20Contract, param);
     });
-
-    it('Testing ERC20FixedSupply Detail', async () => {
-        await ERC20(Instance,accounts);
-    });
-
-    it('Testing ERC20WithBurnable transfer', async () => {
-        await Instance.transfer(accounts[1],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account1Balance = await Instance.balanceOf(accounts[1]);
-        assert.equal(100, web3.utils.fromWei(account1Balance,'ether'));
-    });
-
-    it('Testing ERC20WithBurnable approve', async () => {
-        await Instance.approve(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
-    });
-    
-    it('Testing ERC20WithBurnable transferFrom', async () => {
-        await Instance.transferFrom(accounts[0],accounts[3],web3.utils.toWei('100','ether'),{from:accounts[2]});
-        const account3Balance = await Instance.balanceOf(accounts[3]);
-        assert.equal(100, web3.utils.fromWei(account3Balance,'ether'));
-    });
-    
-    it('Testing ERC20FixedSupply increaseAllowance', async () => {
-        await Instance.increaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
-    });
-    
-    it('Testing ERC20FixedSupply decreaseAllowance', async () => {
-        await Instance.decreaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(0, web3.utils.fromWei(account2Allowance,'ether'));
-    });
-
-    it('Testing ERC20WithBurnable burn', async () => {
-        await Instance.burn(web3.utils.toWei('100','ether'),{from:accounts[3]});
-        account3Balance = await Instance.balanceOf(accounts[3]);
-        assert.equal(0, web3.utils.fromWei(account3Balance,'ether'));
-    });
-
-    it('Testing ERC20WithBurnable burnFrom', async () => {
-        await Instance.approve(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
-
-        await Instance.burnFrom(accounts[0],web3.utils.toWei('100','ether'),{from:accounts[2]});
-        account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(0, web3.utils.fromWei(account2Allowance,'ether'));
+    describe("测试可销毁代币的特殊方法", () => {
+        //测试销毁方法
+        it('销毁方法: burn()', async () => {
+            await ERC20Instance.burn(web3.utils.toWei('100', 'ether'), { from: accounts[3] });
+            const account3Balance = await ERC20Instance.balanceOf(accounts[3]);
+            assert.equal(0, web3.utils.fromWei(account3Balance, 'ether'));
+        });
+        //测试销毁批准方法,先将账户0的100个代币批准给账户2,然后使用账户2销毁账户0的100个代币
+        it('销毁批准方法: burnFrom()', async () => {
+            const accounts0BalanceBefore = await ERC20Instance.balanceOf(accounts[0]);
+            await ERC20Instance.approve(accounts[2], web3.utils.toWei('100', 'ether'), { from: accounts[0] });
+            await ERC20Instance.burnFrom(accounts[0], web3.utils.toWei('100', 'ether'), { from: accounts[2] });
+            const account2Allowance = await ERC20Instance.allowance(accounts[0], accounts[2]);
+            assert.equal(0, web3.utils.fromWei(account2Allowance, 'ether'));
+            const accounts0BalanceAfter = await ERC20Instance.balanceOf(accounts[0]);
+            assert.equal(
+                web3.utils.fromWei(accounts0BalanceBefore, 'ether') - 100,
+                web3.utils.fromWei(accounts0BalanceAfter, 'ether')
+            );
+        });
     });
 });

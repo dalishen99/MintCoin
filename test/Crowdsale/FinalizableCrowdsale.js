@@ -1,92 +1,61 @@
 const assert = require('assert');
-const ERC20FixedSupply = artifacts.require("ERC20FixedSupply");
-const ERC20FinalizableCrowdsale = artifacts.require("ERC20FinalizableCrowdsale");
+const CrowdsaleContract = artifacts.require("ERC20FinalizableCrowdsale");
+const ERC20Contract = artifacts.require("ERC20FixedSupply");
+const ERC20 = require('../ERC20/ERC20');
+const Crowdsale = require('./Crowdsale');
 
-contract('ERC20FinalizableCrowdsale', accounts => {
-    totalSupply = 1000000000;
-    rate = 100;
-    timelock = 5;
-    before(async () => {
-        ERC20FixedSupplyInstance = await ERC20FixedSupply.new(
+contract('可终结的众筹', async (accounts) => {
+    totalSupply = 1000000000;//发行总量
+    describe("布署ERC20合约...", async () => {
+        const param = [
             "My Golden Coin",   //代币名称
             "MGC",              //代币缩写
             18,                 //精度
             totalSupply         //发行总量
-        );
-
-        ERC20FinalizableCrowdsaleInstance = await ERC20FinalizableCrowdsale.new(
-            rate,                               //兑换比例1ETH:100ERC20
-            accounts[1],                        //接收ETH受益人地址
-            ERC20FixedSupplyInstance.address,   //代币地址
-            accounts[0],                        //代币从这个地址发送
-            parseInt(new Date().getTime() / 1000),             //众筹开始时间
-            parseInt(new Date().getTime() / 1000 + timelock)   //众筹结束时间
-        );
-        //在布署之后必须将发送者账户中的代币批准给众筹合约
-        await ERC20FixedSupplyInstance.approve(ERC20FinalizableCrowdsaleInstance.address, web3.utils.toWei(totalSupply.toString(), 'ether'));
+        ];
+        //测试ERC20合约的基本方法
+        ERC20Instance = await ERC20(accounts, ERC20Contract, param);
     });
-
-    it('Testing ERC20FinalizableCrowdsale token', async () => {
-        address = await ERC20FinalizableCrowdsaleInstance.token();
-        assert.equal(address, ERC20FixedSupplyInstance.address);
+    describe("布署可终结的众筹合约...", async () => {
+        rate = 100;//兑换比例1ETH:100ERC20
+        timestamp = Math.ceil(new Date().getTime() / 1000);
+        openingTime = timestamp + 5;
+        closingTime = openingTime + 10;
+        //测试通用的众筹合约
+        const CrowdsaleParam = [
+            openingTime,    //众筹开始时间
+            closingTime     //众筹结束时间
+        ]
+        console.log(CrowdsaleParam)
+        CrowdsaleInstance = await Crowdsale(accounts, CrowdsaleContract, rate, CrowdsaleParam);
     });
+    // describe("测试可终结众筹合约的特殊方法", () => {
 
-    it('Testing ERC20FinalizableCrowdsale wallet', async () => {
-        address = await ERC20FinalizableCrowdsaleInstance.wallet();
-        assert.equal(address, accounts[1]);
-    });
+    //     it('Testing ERC20TimedCrowdsale openingTime closingTime', async () => {
+    //         openingTime = await CrowdsaleInstance.openingTime();
+    //         closingTime = await CrowdsaleInstance.closingTime();
+    //         assert.ok(openingTime.toString() < closingTime.toString());
+    //     });
 
-    it('Testing ERC20FinalizableCrowdsale rate', async () => {
-        rate = await ERC20FinalizableCrowdsaleInstance.rate();
-        assert.equal(100, rate);
-    });
+    //     it('Testing ERC20FinalizableCrowdsale isOpen', async () => {
+    //         assert.ok(await CrowdsaleInstance.isOpen());
+    //     });
 
-    it('Testing ERC20FinalizableCrowdsale tokenWallet', async () => {
-        tokenWallet = await ERC20FinalizableCrowdsaleInstance.tokenWallet();
-        assert.equal(accounts[0], tokenWallet);
-    });
+    //     it('Testing ERC20FinalizableCrowdsale hasClosed', async () => {
+    //         assert.ok(!await CrowdsaleInstance.hasClosed());
+    //     });
 
-    it('Testing ERC20TimedCrowdsale openingTime closingTime', async () => {
-        openingTime = await ERC20FinalizableCrowdsaleInstance.openingTime();
-        closingTime = await ERC20FinalizableCrowdsaleInstance.closingTime();
-        assert.ok(openingTime.toString() < closingTime.toString());
-    });
+    //     it('Testing ERC20FinalizableCrowdsale finalized', async () => {
+    //         assert.ok(!await CrowdsaleInstance.finalized());
+    //     });
 
-    it('Testing ERC20FinalizableCrowdsale isOpen', async () => {
-        assert.ok(await ERC20FinalizableCrowdsaleInstance.isOpen());
-    });
-
-    it('Testing ERC20FinalizableCrowdsale buyTokens', async () => {
-        await ERC20FinalizableCrowdsaleInstance.buyTokens(accounts[2], { value: web3.utils.toWei('10', 'ether') });
-        amount = await ERC20FixedSupplyInstance.balanceOf(accounts[2]);
-        assert.equal(10 * rate, web3.utils.fromWei(amount, 'ether'));
-    });
-
-    it('Testing ERC20FinalizableCrowdsale weiRaised', async () => {
-        weiRaised = await ERC20FinalizableCrowdsaleInstance.weiRaised();
-        assert.equal(10, web3.utils.fromWei(weiRaised, 'ether'));
-    });
-
-    it('Testing ERC20FinalizableCrowdsale remainingTokens', async () => {
-        remainingTokens = await ERC20FinalizableCrowdsaleInstance.remainingTokens();
-        assert.equal(totalSupply - 10 * rate, web3.utils.fromWei(remainingTokens, 'ether'));
-    });
-
-    it('Testing ERC20FinalizableCrowdsale hasClosed', async () => {
-        assert.ok(!await ERC20FinalizableCrowdsaleInstance.hasClosed());
-    });
-
-    it('Testing ERC20FinalizableCrowdsale finalized', async () => {
-        assert.ok(!await ERC20FinalizableCrowdsaleInstance.finalized());
-    });
-
-    it('Testing ERC20FinalizableCrowdsale finalize', (done) => {
-        console.log('Waiting for ' + timelock + ' seconds ......')
-        setTimeout(async () => {
-            await ERC20FinalizableCrowdsaleInstance.finalize();
-            assert.ok(await ERC20FinalizableCrowdsaleInstance.finalized());
-            done();
-        }, timelock * 1000 + 1000);
-    });
-
+    //     it('Testing ERC20FinalizableCrowdsale finalize', (done) => {
+    //         console.log('Waiting for ' + timelock + ' seconds ......')
+    //         setTimeout(async () => {
+    //             await CrowdsaleInstance.finalize();
+    //             assert.ok(await CrowdsaleInstance.finalized());
+    //             done();
+    //         }, timelock * 1000);
+    //     });
+    // });
 });

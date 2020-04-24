@@ -1,71 +1,39 @@
 const assert = require('assert');
-const ERC20WithMintable = artifacts.require("ERC20WithMintable");
-const {ERC20} = require('./ERC20'); 
+const ERC20Contract = artifacts.require("ERC20WithMintable");
+const ERC20 = require('./ERC20');
 
-contract('ERC20WithMintable', accounts => {
-    before(async () => {
-        Instance = await ERC20WithMintable.new(
+contract('可增发代币', accounts => {
+    describe("布署合约...",async () => {
+        const param = [
             "My Golden Coin",   //代币名称
             "MGC",              //代币缩写
             18,                 //精度
             1000000000          //发行总量
-        );
+        ];
+        //测试ERC20合约的基本方法
+        ERC20Instance = await ERC20(accounts, ERC20Contract, param);
     });
 
-    it('Testing ERC20FixedSupply Detail', async () => {
-        await ERC20(Instance,accounts);
-    });
-
-    it('Testing ERC20WithMintable transfer', async () => {
-        await Instance.transfer(accounts[1],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account1Balance = await Instance.balanceOf(accounts[1]);
-        assert.equal(100, web3.utils.fromWei(account1Balance,'ether'));
-    });
-
-    it('Testing ERC20WithMintable approve', async () => {
-        await Instance.approve(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
-    });
-    
-    it('Testing ERC20WithMintable transferFrom', async () => {
-        await Instance.transferFrom(accounts[0],accounts[3],web3.utils.toWei('100','ether'),{from:accounts[2]});
-        const account3Balance = await Instance.balanceOf(accounts[3]);
-        assert.equal(100, web3.utils.fromWei(account3Balance,'ether'));
-    });
-    
-    it('Testing ERC20FixedSupply increaseAllowance', async () => {
-        await Instance.increaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(100, web3.utils.fromWei(account2Allowance,'ether'));
-    });
-    
-    it('Testing ERC20FixedSupply decreaseAllowance', async () => {
-        await Instance.decreaseAllowance(accounts[2],web3.utils.toWei('100','ether'),{from:accounts[0]});
-        const account2Allowance = await Instance.allowance(accounts[0],accounts[2]);
-        assert.equal(0, web3.utils.fromWei(account2Allowance,'ether'));
-    });
-
-    it('Testing ERC20WithMintable mint', async () => {
-        await Instance.mint(accounts[4],web3.utils.toWei('100','ether'));
-        const account4Balance = await Instance.balanceOf(accounts[4]);
-        assert.equal(100, web3.utils.fromWei(account4Balance,'ether'));
-    });
-
-    it('Testing ERC20WithMintable isMinter', async () => {
-        const isMinter = await Instance.isMinter(accounts[0]);
-        assert.ok(isMinter);
-    });
-
-    it('Testing ERC20WithMintable addMinter', async () => {
-        await Instance.addMinter(accounts[1],{from:accounts[0]});
-        isMinter = await Instance.isMinter(accounts[1]);
-        assert.ok(isMinter);
-    });
-
-    it('Testing ERC20WithMintable renounceMinter', async () => {
-        await Instance.renounceMinter({from:accounts[1]});
-        isMinter = await Instance.isMinter(accounts[1]);
-        assert.ok(!isMinter);
+    describe("测试可增发代币的特殊方法", () => {
+        //测试铸币方法
+        it('铸币方法: mint()', async () => {
+            await ERC20Instance.mint(accounts[4], web3.utils.toWei('100', 'ether'));
+            const account4Balance = await ERC20Instance.balanceOf(accounts[4]);
+            assert.equal(100, web3.utils.fromWei(account4Balance, 'ether'));
+        });
+        //测试返回账户拥有铸币权
+        it('返回账户拥有铸币权: isMinter()', async () => {
+            assert.ok(await ERC20Instance.isMinter(accounts[0]));
+        });
+        //测试添加铸币者
+        it('添加铸币者: addMinter()', async () => {
+            await ERC20Instance.addMinter(accounts[1], { from: accounts[0] });
+            assert.ok(await ERC20Instance.isMinter(accounts[1]));
+        });
+        //测试撤销铸币权
+        it('撤销铸币权: renounceMinter()', async () => {
+            await ERC20Instance.renounceMinter({ from: accounts[1] });
+            assert.ok(!await ERC20Instance.isMinter(accounts[1]));
+        });
     });
 });
