@@ -63,8 +63,8 @@ contract('不成功退款的众筹(众筹不成功)', accounts => {
         it('重新众筹已开始: isOpen()', async function() {
             assert.ok(await CrowdsaleInstance.isOpen());
         });
-        //测试众筹结束前购买账户余额未0
-        it('众筹结束前购买账户余额未0: balanceOf()', async function() {
+        //测试众筹结束前购买账户余额为0
+        it('众筹结束前购买账户余额为0: balanceOf()', async function() {
             assert.equal(0 * rate, web3.utils.fromWei(await ERC20Instance.balanceOf(accounts[2]), 'ether'));
         });
         //重新测试众筹收入

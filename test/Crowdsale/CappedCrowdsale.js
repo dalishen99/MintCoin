@@ -33,11 +33,11 @@ contract('有封顶的众筹', accounts => {
     });
     describe("测试有封顶众筹合约的特殊方法", function() {
         //测试封顶数额
-        it('封顶数额: cap', async function() {
+        it('封顶数额: cap()', async function() {
             assert.equal(web3.utils.fromWei(cap, 'ether'), web3.utils.fromWei(await CrowdsaleInstance.cap(), 'ether'));
         });
         //测试没有到达封顶数额
-        it('没有到达封顶数额: capReached', async function() {
+        it('没有到达封顶数额: capReached()', async function() {
             assert.ok(!await CrowdsaleInstance.capReached());
         });
     });

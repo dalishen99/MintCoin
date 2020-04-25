@@ -35,7 +35,7 @@ contract('可暂停代币', accounts => {
             assert.ok(await ERC20Instance.paused());
         });
         //测试暂停后发送代币
-        it('暂停后发送代币: transfer() after pause', async function () {
+        it('暂停后发送代币: transfer()', async function () {
             await assert.rejects(ERC20Instance.transfer(accounts[1], web3.utils.toWei('100', 'ether')), /paused/);
         });
         //测试恢复方法
