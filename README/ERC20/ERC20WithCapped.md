@@ -1,6 +1,7 @@
 # MintCoin崔棉大师的花式发币法
 
 ## 有封顶代币
+> 有封顶的代币指的是在可增发代币的基础上设置了铸造封顶数额,当铸造到达封顶数额时将抛出异常.
 
 [合约文件: WithCapped.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithCapped.sol)
 
@@ -43,4 +44,12 @@ decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool
 //特殊方法
 //返回封顶数量
 cap() public view returns (uint256)     
+//查询指定地址是否拥有铸币权
+isMinter(address account) public view returns (bool)   
+//给指定地址添加铸币权,只能通过有铸币权的地址添加
+addMinter(address account) public onlyMinter          
+//撤销当前发送账户的铸币权 
+renounceMinter() public               
+//铸币                 
+mint(address account, uint256 amount) public onlyMinter returns (bool) 
 ```

@@ -1,7 +1,7 @@
 # MintCoin崔棉大师的花式发币法
 
 ## 固定总量代币
-
+> 固定总量代币是最基础的ERC20代币,包含了代币名称,代币缩写,精度和发型总量四个基本信息.
 [合约文件: FixedSupply.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20FixedSupply.sol)
 
 [测试脚本: FixedSupply.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20FixedSupply.js)

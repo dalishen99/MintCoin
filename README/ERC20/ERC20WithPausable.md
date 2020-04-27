@@ -1,7 +1,7 @@
 # MintCoin崔棉大师的花式发币法
 
 ## 可暂停代币
-
+> 可暂停代币是指代币发行后,可以拥有权限的账户可以将代币所有功能暂停,当你的合约发生异常情况下将会有用
 [合约文件: WithPausable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithPausable.sol)
 
 [测试脚本: WithPausable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithPausable.js)
