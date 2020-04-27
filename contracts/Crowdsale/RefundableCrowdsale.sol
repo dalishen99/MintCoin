@@ -26,7 +26,6 @@ contract ERC20RefundableCrowdsale is
         Crowdsale(rate, wallet, token)
         AllowanceCrowdsale(tokenWallet)
         TimedCrowdsale(openingTime, closingTime)
-        FinalizableCrowdsale()
         RefundableCrowdsale(goal)
         RefundablePostDeliveryCrowdsale()
     {}

@@ -15,8 +15,8 @@ module.exports = function (deployer, network, accounts) {
       accounts[1],                //接收ETH受益人地址
       ERC20FixedSupply.address,   //代币地址
       accounts[0],                //代币从这个地址发送
-      parseInt(new Date().getTime() / 1000) + 5,      //众筹开始时间
-      parseInt(new Date().getTime() / 1000 + 60)  //众筹结束时间
+      Math.ceil(new Date().getTime() / 1000) + 60,      //众筹开始时间
+      Math.ceil(new Date().getTime() / 1000) + 600  //众筹结束时间
     ).then(() => {
       //在布署之后必须将发送者账户中的代币批准给众筹合约
       //totalSupply 是批准数量,默认是全部代币数量,你可以调整成自己需要的

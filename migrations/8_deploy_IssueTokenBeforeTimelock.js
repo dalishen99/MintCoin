@@ -10,7 +10,7 @@ module.exports = async (deployer, network, accounts) => {
     return deployer.deploy(IssueTokenBeforeTimelock,
         ERC20FixedSupplyInstance.address,         //ERC20代币合约地址,如果你希望在未来的某个时间布署这个锁仓合约,可以将这里替换成合约地址
         accounts[1],                              //受益人
-        parseInt(new Date().getTime() / 1000 + 60)//解锁时间戳
+        parseInt(new Date().getTime() / 1000 + 10)//解锁时间戳
     ).then(function (IssueTokenBeforeTimelockInstance) {
         //将代币转移到锁仓合约的账户中
         //如果不是同时布署这个合约,可以通过其他方法随时调用ERC20的transfer方法

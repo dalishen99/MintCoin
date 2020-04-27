@@ -18,7 +18,7 @@ module.exports = (deployer, network, accounts) => {
             return deployer.deploy(IssueTokenWithTimelock,
                 ERC20FixedSupplyInstance.address,           //ERC20代币合约地址
                 accounts[0],                                //受益人为当前账户
-                parseInt(new Date().getTime() / 1000 + 60)  //解锁时间戳
+                parseInt(new Date().getTime() / 1000 + 10)  //解锁时间戳
             ).then((IssueTokenWithTimelockInstance) => {
                 //将代币转移到锁仓合约的账户中
                 ERC20FixedSupplyInstance.transfer(IssueTokenWithTimelockInstance.address, web3.utils.toWei(amount.toString(),'ether'));

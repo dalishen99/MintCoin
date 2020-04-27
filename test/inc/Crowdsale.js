@@ -1,5 +1,6 @@
 const assert = require('assert');
-module.exports = (accounts, rate, skipBuy) => {
+const {ether} = require('@openzeppelin/test-helpers');
+module.exports = (rate, skipBuy) => {
     describe("测试通用的众筹合约", function () {
         //测试ERC20代币地址
         it('ERC20代币地址: token()', async function () {
@@ -7,7 +8,7 @@ module.exports = (accounts, rate, skipBuy) => {
         });
         //测试ETH受益人地址
         it('ETH受益人地址: wallet()', async function () {
-            assert.equal(accounts[1], await CrowdsaleInstance.wallet());
+            assert.equal(sender, await CrowdsaleInstance.wallet());
         });
         //测试兑换比例
         it('兑换比例: rate()', async function () {
@@ -15,15 +16,15 @@ module.exports = (accounts, rate, skipBuy) => {
         });
         //测试发送代币账户
         it('发送代币账户: tokenWallet()', async function () {
-            assert.equal(accounts[0], await CrowdsaleInstance.tokenWallet());
+            assert.equal(owner, await CrowdsaleInstance.tokenWallet());
         });
         //测试购买代币方法
         it('购买代币方法: buyTokens()', async function () {
             if (skipBuy === true) {
                 this.skip();
             } else {
-                await CrowdsaleInstance.buyTokens(accounts[2], { value: web3.utils.toWei('10', 'ether') });
-                assert.equal(10 * rate, web3.utils.fromWei(await ERC20Instance.balanceOf(accounts[2]), 'ether'));
+                await CrowdsaleInstance.buyTokens(sender, { value: eth,from:sender });
+                assert.equal(ether((10 * rate).toString()).toString(), (await ERC20Instance.balanceOf(sender)).toString());
             }
         });
         //测试众筹收入
@@ -31,14 +32,14 @@ module.exports = (accounts, rate, skipBuy) => {
             if (skipBuy === true) {
                 this.skip();
             } else {
-                assert.equal(10, web3.utils.fromWei(await CrowdsaleInstance.weiRaised(), 'ether'));
+                assert.equal(ether('10'), (await CrowdsaleInstance.weiRaised()).toString());
             }
         });
         //测试剩余代币数量
         it('剩余代币数量: remainingTokens()', async function () {
             assert.equal(
-                web3.utils.fromWei(await CrowdsaleInstance.remainingTokens(), 'ether'),
-                web3.utils.fromWei(await CrowdsaleInstance.remainingTokens(), 'ether')
+                (await ERC20Instance.balanceOf(owner)),
+                (await CrowdsaleInstance.remainingTokens()).toString()
             );
         });
     });

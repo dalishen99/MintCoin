@@ -9,15 +9,24 @@
   "dependencies": {
     "@davidqhr/ganache-cli": "6.4.3",
     "@openzeppelin/contracts": "^2.5.0",
-    "@truffle/hdwallet-provider": "^1.0.12",
+    "@truffle/hdwallet-provider": "^1.0.34",
+    "bip39": "^3.0.2",
+    "ethers": "^4.0.47",
+    "inquirer": "^7.1.0",
     "truffle": "5.0.22"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@openzeppelin/test-environment": "^0.1.4",
+    "@openzeppelin/test-helpers": "^0.5.5",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2"
+  },
   "scripts": {
-    "test": "DEBUG=GasUsed truffle test",
-    "migrate": "truffle migrate",
+    "test": "node script/test.js",
+    "migrate": "node script/migrate.js",
     "compile": "truffle compile",
-    "node": "ganache-cli -l 0x1fffffffffffff -g 1 --allowUnlimitedContractSize -e 1000"
+    "ganache": "ganache-cli -e 1000",
+    "node": "node script/network.js"
   },
   "keywords": [],
   "author": "",

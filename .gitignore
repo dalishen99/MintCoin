@@ -10,5 +10,6 @@ package-lock.json
 .vscode/
 
 bin/
-.secret
+.infuraKey
+.mnemonic
 .openzeppelin
