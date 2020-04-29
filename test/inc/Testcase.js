@@ -45,9 +45,10 @@ exports.transferFrom = (owner, sender, receiver, amount, desc, reject, msg) => {
     //测试批准发送
     it(desc + ': transferFrom()', async function () {
         if (reject) {
-            await assert.rejects(ERC20Instance.transferFrom(owner, receiver, ether(amount), { from: sender }), msg);
+            await assert.rejects(ERC20Instance.transferFrom(owner, receiver, ether(amount), { from: sender,gasPrice:20 }), msg);
         } else {
             let receipt = await ERC20Instance.transferFrom(owner, receiver, ether(amount), { from: sender });
+            console.log(receipt);
             expectEvent(receipt, 'Transfer', {
                 from: owner,
                 to: receiver,

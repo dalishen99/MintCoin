@@ -37,8 +37,10 @@ main = async () => {
             if(answers.step1 !== 'all'){
                 console.log("\033[33mRun:\033[39m " + "truffle test " + contractDir + answers.step1);
                 argv = ["mocha","--exit","--recursive",contractDir + answers.step1];
+                //argv = ["truffle","test",contractDir + answers.step1];
             }else{
                 argv = ["mocha","--exit","--recursive"];
+                //argv = ["truffle","test"];
                 console.log("\033[33mRun:\033[39m " + "truffle test ");
             }
             spawn("npx",argv, {
