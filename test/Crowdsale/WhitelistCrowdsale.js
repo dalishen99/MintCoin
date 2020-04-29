@@ -36,7 +36,7 @@ describe("布署有封顶众筹合约...", async function () {
     //测试通用的众筹合约
     await Crowdsale(rate, true);
 });
-describe("测试有封顶众筹合约的特殊方法", function () {
+describe("测试有白名单的众筹合约的特殊方法", function () {
     //测试账户不在白名单
     it('账户不在白名单: isWhitelisted()', async function () {
         assert.ok(!await CrowdsaleInstance.isWhitelisted(sender));

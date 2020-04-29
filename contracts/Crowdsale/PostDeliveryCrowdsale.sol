@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/crowdsale/distribution/PostDeliveryCrowdsale.sol
 import "@openzeppelin/contracts/crowdsale/validation/TimedCrowdsale.sol";
 
 
-//成功后交付的众筹
+//到期后交付的众筹
 contract ERC20PostDeliveryCrowdsale is
     Crowdsale,
     AllowanceCrowdsale,

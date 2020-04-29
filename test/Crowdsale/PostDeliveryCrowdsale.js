@@ -12,7 +12,7 @@ value = ether('10');
 eth = ether('10');
 rate = 100;//兑换比例1ETH:100ERC20
 
-describe("成功后交付的合约...", async function () {
+describe("到期后交付的众筹", async function () {
     const param = [
         "My Golden Coin",   //代币名称
         "MGC",              //代币缩写
@@ -21,15 +21,15 @@ describe("成功后交付的合约...", async function () {
     ];
     ERC20Instance = await ERC20(ERC20Contract, param);
 });
-describe("布署成功后交付的众筹合约...", async function () {
+describe("布署到期后交付的众筹合约...", async function () {
     it('布署合约并且批准给众筹账户', async function () {
         CrowdsaleInstance = await CrowdsaleContract.new(
-            rate,                               //兑换比例1ETH:100ERC20
-            sender,                        //接收ETH受益人地址
-            ERC20Instance.address,              //代币地址
-            owner,                        //代币从这个地址发送
+            rate,                                 //兑换比例1ETH:100ERC20
+            sender,                               //接收ETH受益人地址
+            ERC20Instance.address,                //代币地址
+            owner,                                //代币从这个地址发送
             parseInt(await time.latest()) + 60,   //众筹开始时间
-            parseInt(await time.latest()) + 600,   //众筹结束时间
+            parseInt(await time.latest()) + 600,  //众筹结束时间
             { from: owner }
         );
         //在布署之后必须将发送者账户中的代币批准给众筹合约
@@ -39,7 +39,7 @@ describe("布署成功后交付的众筹合约...", async function () {
     await Crowdsale(rate, true);
 });
 
-describe("测试成功后交付众筹合约的特殊方法", function () {
+describe("测试到期后交付众筹合约的特殊方法", function () {
     //测试开始时间
     it('开始时间: openingTime()', async function () {
         assert.doesNotReject(CrowdsaleInstance.openingTime());

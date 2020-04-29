@@ -13,7 +13,6 @@ contract ERC20PausableCrowdsale is Crowdsale, AllowanceCrowdsale, PausableCrowds
         address tokenWallet     // 代币从这个地址发送
     )
         AllowanceCrowdsale(tokenWallet)
-        PausableCrowdsale()
         Crowdsale(rate, wallet, token)
         public
     {

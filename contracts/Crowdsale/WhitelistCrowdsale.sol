@@ -13,7 +13,6 @@ contract ERC20WhitelistCrowdsale is Crowdsale, AllowanceCrowdsale, WhitelistCrow
         address tokenWallet     // 代币从这个地址发送
     )
         AllowanceCrowdsale(tokenWallet)
-        WhitelistCrowdsale()
         Crowdsale(rate, wallet, token)
         public
     {

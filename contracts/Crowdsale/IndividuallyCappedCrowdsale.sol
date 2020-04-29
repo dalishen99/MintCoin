@@ -13,7 +13,6 @@ contract ERC20IndividuallyCappedCrowdsale is Crowdsale, AllowanceCrowdsale, Indi
         address tokenWallet     // 代币从这个地址发送
     )
         AllowanceCrowdsale(tokenWallet)
-        IndividuallyCappedCrowdsale()
         Crowdsale(rate, wallet, token)
         public
     {

@@ -4,7 +4,7 @@ const ERC20CappedCrowdsale = artifacts.require("ERC20CappedCrowdsale");
 
 module.exports = function (deployer, network, accounts) {
   const totalSupply = 1000000000;                 //发行量
-  const cap = web3.utils.toWei('10000','ether');  //众筹封顶数量
+  const cap = web3.utils.toWei('2000000000','ether');  //众筹封顶数量
   deployer.deploy(ERC20FixedSupply,
     "My Golden Coin", //代币名称
     "MGC",            //代币缩写

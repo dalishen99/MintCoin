@@ -11,7 +11,7 @@ totalSupply = 1000000000;//发行总量
 value = ether('10');
 eth = ether('10');
 rate = 100;//兑换比例1ETH:100ERC20
-cap = ether('10000'); //封顶数额
+cap = ether('2000000000'); //封顶数额
 
 describe("有封顶的众筹合约", async function () {
     const param = [
@@ -41,7 +41,7 @@ describe("布署有封顶的众筹合约...", async function () {
 describe("测试有封顶众筹合约的特殊方法", function () {
     //测试封顶数额
     it('封顶数额: cap()', async function () {
-        assert.equal((cap), (await CrowdsaleInstance.cap()).toString());
+        assert.equal(cap.toString(), (await CrowdsaleInstance.cap()).toString());
     });
     //测试没有到达封顶数额
     it('没有到达封顶数额: capReached()', async function () {

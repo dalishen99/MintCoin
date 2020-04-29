@@ -10,7 +10,6 @@ import "@openzeppelin/contracts/crowdsale/distribution/RefundablePostDeliveryCro
 contract ERC20RefundableCrowdsale is
     Crowdsale,
     AllowanceCrowdsale,
-    RefundableCrowdsale,
     RefundablePostDeliveryCrowdsale
 {
     constructor(

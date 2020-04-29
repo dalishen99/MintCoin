@@ -9,7 +9,7 @@ totalSupply = 1000000000;//发行总量
 [owner, sender, receiver] = accounts;
 eth = ether('10');
 rate = 100;//兑换比例1ETH:100ERC20
-describe("铸造式众筹", async function () {
+describe("可增发的众筹", async function () {
     const param = [
         "My Golden Coin",   //代币名称
         "MGC",              //代币缩写
@@ -18,7 +18,7 @@ describe("铸造式众筹", async function () {
     ];
     ERC20Instance = await ERC20(ERC20Contract, param);
 });
-describe("铸造式众筹合约:", function () {
+describe("布署可增发的众筹合约:", function () {
     before(async function () {
         //布署众筹合约
         CrowdsaleInstance = await CrowdsaleContract.new(
@@ -38,7 +38,7 @@ describe("铸造式众筹合约:", function () {
             assert.doesNotReject(ERC20Instance.renounceMinter({from:owner}));
         });
     });
-    describe("测试铸造式众筹合约方法", function () {
+    describe("测试可增发的众筹合约方法", function () {
         //测试ERC20代币地址
         it('ERC20代币地址: token()', async function () {
             assert.equal(ERC20Instance.address, tokenAddress = await CrowdsaleInstance.token());
