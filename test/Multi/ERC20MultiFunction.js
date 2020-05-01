@@ -1,9 +1,8 @@
 const assert = require('assert');
 const { contract } = require('@openzeppelin/test-environment');
-const { expectRevert, ether } = require('@openzeppelin/test-helpers');
+const {expectRevert,ether} = require('@openzeppelin/test-helpers');
 const ERC20Contract = contract.fromArtifact('ERC20MultiFunction');
 const ERC20 = require('../inc/ERC20');
-const Testcase = require('../inc/Testcase');
 describe("多功能代币", async function () {
     const param = [
         "My Golden Coin",   //代币名称
@@ -15,27 +14,6 @@ describe("多功能代币", async function () {
     //测试ERC20合约的基本方法
     ERC20Instance = await ERC20(ERC20Contract, param);
 });
-
-describe("测试", function () {
-    it('purchaserEthBalance: ', async function () {
-        purchaserEthBalance = await balance.tracker(purchaser, unit = 'ether');
-        console.log((await purchaserEthBalance.get(unit = 'ether')).toString());
-    });
-    //测试发送批准,账户2将账户0的100个代币发送给账户3,再查询账户3的余额为100
-    it('发送批准1: transferFrom()', async function () {
-        let receipt = await ERC20Instance.transferFrom(owner, purchaser, value, { from: sender });
-        assert.equal(value, (await ERC20Instance.balanceOf(purchaser)).toString());
-        expectEvent(receipt, 'Transfer', {
-            from: owner,
-            to: purchaser,
-            value: value,
-        });
-    });
-    it('purchaserEthBalance: ', async function () {
-        console.log((await purchaserEthBalance.delta(unit = 'ether')).toString());
-    });
-});
-
 describe("测试多功能代币的特殊方法", function () {
     //测试销毁方法
     it('销毁方法: burn()', async function () {
@@ -69,7 +47,7 @@ describe("测试多功能代币的特殊方法", function () {
     });
     //测试封顶方法
     it('封顶方法: cap()', async function () {
-        await expectRevert(ERC20Instance.mint(owner, ether('1000000000'), { from: owner }), 'cap exceeded');
+        await expectRevert(ERC20Instance.mint(owner, ether('1000000000'),{from:owner}), 'cap exceeded');
     });
     //测试是暂停者
     it('是暂停者: isPauser()', async function () {

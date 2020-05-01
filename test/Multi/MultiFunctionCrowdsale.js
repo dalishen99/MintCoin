@@ -1,14 +1,9 @@
 const assert = require('assert');
-const { contract, accounts } = require('@openzeppelin/test-environment');
+const { contract, accounts,web3 } = require('@openzeppelin/test-environment');
 const { ether, time, constants, balance } = require('@openzeppelin/test-helpers');
 const CrowdsaleContract = contract.fromArtifact("MultiFunctionCrowdsale");
 const ERC20Contract = contract.fromArtifact("MultiFunctionCrowdsaleERC20");
 const Testcase = require('../inc/Testcase');
-require('@openzeppelin/test-helpers/configure')({
-    singletons: {
-        defaultGasPrice: 20,
-    },
-  });
 //多功能众筹合约:可增发,可销毁,有封顶,有配额,可暂停,有时限,白名单,成功后交付,不成功退款
 totalSupply = '10000';//发行总量
 [owner, sender, receiver, purchaser, beneficiary] = accounts;
@@ -17,7 +12,6 @@ eth = '10';
 rate = '1000';
 goal = '15';
 cap = '20000'; //封顶数额
-
 describe("布署合约", function () {
     it('布署代币合约', async function () {
         ERC20Param = [
@@ -75,18 +69,8 @@ describe("测试ERC20合约的标准方法", async function () {
     Testcase.ERC20balanceOf(value, receiver, '接收者账户余额');//receiver.balance = value
     Testcase.approve(owner, constants.ZERO_ADDRESS, value, '批准代币,0地址错误', true, /ERC20: approve to the zero address/);
     Testcase.approve(receiver, purchaser, value, '批准代币');
-    it('purchaserEthBalance: ', async function () {
-        purchaserEthBalance = await balance.tracker(purchaser, unit = 'wei');
-        console.log((await purchaserEthBalance.get(unit = 'ether')).toString());
-    });
     Testcase.allowance(receiver, purchaser, value, '验证批准数额');//receiver=>purchaser = value
     Testcase.transferFrom(receiver, purchaser, beneficiary, value, '批准发送');//beneficiary.balance = value
-    it('purchaserEthBalance: ', async function () {
-        console.log((await purchaserEthBalance.delta(unit = 'wei')).toString());
-    });
-    it('purchaserEthBalance: ', async function () {
-        console.log((await balance.current(purchaser, unit = 'wei')).toString());
-    });
     Testcase.ERC20balanceOf(value, beneficiary, '接收者账户余额');//receiver.balance = value
     Testcase.transferFrom(receiver, purchaser, beneficiary, value, '超额批准发送', true, /ERC20: transfer amount exceeds balance/);
     Testcase.allowance(receiver, purchaser, '0', '批准额归零');//receiver=>purchaser = 0
@@ -95,12 +79,6 @@ describe("测试ERC20合约的标准方法", async function () {
     Testcase.decreaseAllowance(receiver, purchaser, value, '减少批准额');
     Testcase.allowance(receiver, purchaser, '0', '批准数额归零');//receiver=>purchaser = 0
     Testcase.decreaseAllowance(receiver, purchaser, value, '超额减少批准额', true, /ERC20: decreased allowance below zero/);
-    it('purchaserEthBalance: ', async function () {
-        // let purchaserEthBalance = (await balance.current(purchaser, unit = 'ether')).toString();
-        // let beneficiaryEthBalance = (await balance.current(beneficiary, unit = 'ether')).toString();
-        // console.log(purchaserEthBalance);
-        // console.log(beneficiaryEthBalance);
-    });
 });
 describe("测试ERC20合约的销毁方法", async function () {
     Testcase.burn(beneficiary, value, '销毁代币');
@@ -222,12 +200,22 @@ describe("测试众筹目标的方法", function () {
 });
 
 describe("测试众筹使用顺序", async function () {
+    it('记录purchaser当前ETH余额:', async function () {
+        purchaserBalance = await web3.eth.getBalance(purchaser);
+    });
+    it('记录sender当前ETH余额:', async function () {
+        senderBalance = await web3.eth.getBalance(sender);
+    });
     Testcase.addWhitelisted(purchaser, owner, '添加白名单');
     Testcase.addWhitelisted(beneficiary, owner, '添加白名单');
     Testcase.setCap(purchaser, owner, value, '设置配额');
     Testcase.setCap(beneficiary, owner, value, '设置配额');
     Testcase.buyTokens(purchaser, eth, '购买代币');
     Testcase.buyTokens(beneficiary, eth, '购买代币');
+    it('验证purchaser的ETH余额减少'+ eth, async function () {
+        let _purchaserBalance = parseInt(web3.utils.fromWei((await web3.eth.getBalance(purchaser) - purchaserBalance).toString(),'ether'));
+        assert.equal(eth, _purchaserBalance * -1);
+    });
     const weiRaised = (parseInt(value) * 2).toString();
     Testcase.weiRaised(weiRaised, '众筹收入为' + weiRaised);
     Testcase.ERC20balanceOf('0', beneficiary, '购买者账户余额');
@@ -240,6 +228,10 @@ describe("测试众筹使用顺序", async function () {
     Testcase.hasClosed(true, '验证众筹已到期');
     Testcase.finalize('验证众筹未到期无法结束');
     Testcase.finalized(true, '验证众筹已结束');
+    it('验证sender的ETH余额增加'+ weiRaised, async function () {
+        let _senderBalance = parseInt(web3.utils.fromWei((await web3.eth.getBalance(sender) - senderBalance).toString(),'ether'));
+        assert.equal(weiRaised, _senderBalance);
+    });
     Testcase.claimRefund(beneficiary, '众筹结束达到目标不能退款', true, /RefundableCrowdsale: goal reached/);
     Testcase.withdrawTokens(beneficiary, '验证众筹结束后提款');
     Testcase.ERC20balanceOf(verifyBalance, beneficiary, '购买者账户余额为' + verifyBalance);
