@@ -27,7 +27,6 @@ main = async () => {
     ])
         .then(answers => {
             let argv;
-            console.log(answers)
             if (answers.step1 !== 'all') {
                 console.log("\033[33mRun:\033[39m " + "truffle migrate --f " + answers.step1 + " --to " + answers.step1);
                 argv = ["migrate","--f", answers.step1,"--to",answers.step1];

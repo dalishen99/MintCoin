@@ -1,104 +1,259 @@
 const assert = require('assert');
-const { accounts } = require('@openzeppelin/test-environment');
-const {
-    BN,
-    constants,
-    expectEvent,
-    expectRevert,
-    ether
-} = require('@openzeppelin/test-helpers');
-module.exports = (ERC20Contract, param) => {
-    [owner, sender, receiver, purchaser, beneficiary] = accounts;
-    value = ether('100');
-    before(async function () {
-        //布署代币合约
-        ERC20Instance = await ERC20Contract.new(...param, { from: owner });
+const { ether, constants, expectEvent } = require('@openzeppelin/test-helpers');
+exports.datail = () => {
+    it('代币名称: name()', async function () {
+        assert.equal(ERC20Param[0], await ERC20Instance.name());
     });
-    describe("测试ERC20合约的基本信息", async function () {
-        it('代币名称: name()', async function () {
-            assert.equal(param[0], await ERC20Instance.name());
-        });
-        it('代币缩写: symbol()', async function () {
-            assert.equal(param[1], await ERC20Instance.symbol());
-        });
-        it('代币精度: decimals()', async function () {
-            const decimals = await ERC20Instance.decimals();
-            assert.equal(param[2], decimals.toString());
-        });
+    it('代币缩写: symbol()', async function () {
+        assert.equal(ERC20Param[1], await ERC20Instance.symbol());
     });
-    describe("测试ERC20合约的标准方法", async function () {
-        //测试代币总量
-        it('代币总量: totalSupply()', async function () {
-            assert.equal(ether(param[3].toString()).toString(), (await ERC20Instance.totalSupply()).toString());
-        });
-        //测试创建者账户余额
-        it('账户余额: balanceOf()', async function () {
-            assert.equal(ether(param[3].toString()).toString(), (await ERC20Instance.balanceOf(owner)).toString());
-        });
-        //测试代币发送,0地址错误
-        it('代币发送,0地址错误: transfer()', async function () {
-            await expectRevert(
-                ERC20Instance.transfer(constants.ZERO_ADDRESS, value),
-                'ERC20: transfer to the zero address',
-            );
-        });
-        //测试代币发送,并触发事件
-        it('测试代币发送,并触发事件', async function () {
-            let receipt = await ERC20Instance.transfer(
-                receiver, value, { from: owner }
-            );
+    it('代币精度: decimals()', async function () {
+        assert.equal(ERC20Param[2], (await ERC20Instance.decimals()).toString());
+    });
+    it('代币总量: totalSupply()', async function () {
+        assert.equal(ether(ERC20Param[3]).toString(), (await ERC20Instance.totalSupply()).toString());
+    });
+}
+exports.totalSupply = (totalSupply) => {
+    //测试代币总量
+    it('代币总量: totalSupply()', async function () {
+        assert.equal(ether(totalSupply).toString(), (await ERC20Instance.totalSupply()).toString());
+    });
+}
+exports.balanceOf = (balance, account, desc) => {
+    //测试账户余额
+    it(desc + ': balanceOf()', async function () {
+        assert.equal(ether(balance).toString(), (await ERC20Instance.balanceOf(account)).toString());
+    });
+}
+exports.cap = (cap,desc) => {
+    //测试封顶额
+    it(desc + ': cap()', async function () {
+        assert.equal(ether(cap).toString(), (await ERC20Instance.cap()).toString());
+    });
+}
+exports.transfer = (sender, receiver, amount, desc, reject, msg) => {
+    //测试代币发送
+    it(desc + ': transfer()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.transfer(receiver, ether(amount), { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.transfer(receiver, ether(amount), { from: sender });
+            expectEvent(receipt, 'Transfer', {
+                from: sender,
+                to: receiver,
+                value: ether(amount),
+            });
+        }
+    });
+}
+exports.approve = (sender, receiver, amount, desc, reject, msg) => {
+    it(desc + ': approve()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.approve(receiver, ether(amount), { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.approve(receiver, ether(amount), { from: sender });
+            expectEvent(receipt, 'Approval', {
+                owner: sender,
+                spender: receiver,
+                value: ether(amount),
+            });
+        }
+    });
+}
+exports.transferFrom = (owner, sender, receiver, amount, desc, reject, msg) => {
+    //测试批准发送
+    it(desc + ': transferFrom()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.transferFrom(owner, receiver, ether(amount), { from: sender, gasPrice: 20 }), msg);
+        } else {
+            let receipt = await ERC20Instance.transferFrom(owner, receiver, ether(amount), { from: sender });
             expectEvent(receipt, 'Transfer', {
                 from: owner,
                 to: receiver,
-                value: value,
+                value: ether(amount),
             });
-        });
-        //测试接受者账户余额
-        it('测试接受者账户余额', async function () {
-            assert.equal(value, (await ERC20Instance.balanceOf(receiver)).toString());
-        });
-        //测试批准代币,账户0批准100个代币给账户2,再查询账户0给账户2的批准为100
-        it('批准代币: approve()', async function () {
-            let receipt = await ERC20Instance.approve(sender, value, { from: owner });
-            assert.equal(value, (await ERC20Instance.allowance(owner, sender)).toString());
+        }
+    });
+}
+exports.allowance = (owner, sender, amount, desc) => {
+    //测试批准数额
+    it(desc + ': allowance()', async function () {
+        assert.equal(ether(amount), (await ERC20Instance.allowance(owner, sender)).toString());
+    });
+}
+exports.increaseAllowance = (sender, receiver, amount, desc, reject, msg) => {
+    //测试增加批准额
+    it(desc + ': increaseAllowance()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.increaseAllowance(receiver, ether(amount), { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.increaseAllowance(receiver, ether(amount), { from: sender });
             expectEvent(receipt, 'Approval', {
-                owner: owner,
-                spender: sender,
-                value: value,
+                owner: sender,
+                spender: receiver,
             });
-        });
-        //测试发送批准,账户2将账户0的100个代币发送给账户3,再查询账户3的余额为100
-        it('发送批准: transferFrom()', async function () {
-            let receipt = await ERC20Instance.transferFrom(owner, purchaser, value, { from: sender });
-            assert.equal(value, (await ERC20Instance.balanceOf(purchaser)).toString());
+        }
+    });
+}
+exports.decreaseAllowance = (sender, receiver, amount, desc, reject, msg) => {
+    //测试减少批准额
+    it(desc + ': decreaseAllowance()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.decreaseAllowance(receiver, ether(amount), { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.decreaseAllowance(receiver, ether(amount), { from: sender });
+            expectEvent(receipt, 'Approval', {
+                owner: sender,
+                spender: receiver,
+            });
+        }
+    });
+}
+exports.burn = (sender, amount, desc, reject, msg) => {
+    //测试销毁方法
+    it(desc + ': burn()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.burn(ether(amount), { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.burn(ether(amount), { from: sender });
+            expectEvent(receipt, 'Transfer', {
+                from: sender,
+                to: constants.ZERO_ADDRESS,
+                value: ether(amount),
+            });
+        }
+    });
+}
+exports.burnFrom = (owner, sender, amount, desc, reject, msg) => {
+    //测试销毁批准方法
+    it(desc + ': burnFrom()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.burnFrom(owner, ether(amount), { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.burnFrom(owner, ether(amount), { from: sender });
             expectEvent(receipt, 'Transfer', {
                 from: owner,
-                to: purchaser,
-                value: value,
+                to: constants.ZERO_ADDRESS,
+                value: ether(amount),
             });
-        });
-        //测试增加批准额,账户0给账户2增加100个代币的批准,再查询账户0给账户2的批准为100
-        it('增加批准额: increaseAllowance()', async function () {
-            let receipt = await ERC20Instance.increaseAllowance(sender, value, { from: owner });
-            assert.equal(value, (await ERC20Instance.allowance(owner, sender)).toString());
             expectEvent(receipt, 'Approval', {
                 owner: owner,
                 spender: sender,
-                value: value,
             });
-        });
-        //测试减少批准额,账户0减少账户2的批准额100个代币,再查询账户0给账户2的批准为0
-        it('减少批准额: decreaseAllowance()', async function () {
-            let receipt = await ERC20Instance.decreaseAllowance(sender, value, { from: owner });
-            assert.equal(0, (await ERC20Instance.allowance(owner, sender)).toString());
-            expectEvent(receipt, 'Approval', {
-                owner: owner,
-                spender: sender,
-                value: new BN(0),
-            });
-        });
+        }
     });
-    after(() => {
-        return ERC20Instance;
-    })
+}
+exports.mint = (owner, beneficiary, amount, desc, reject, msg) => {
+    //测试铸币方法
+    it(desc + ': mint()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.mint(beneficiary, ether(amount), { from: owner }), msg);
+        } else {
+            let receipt = await ERC20Instance.mint(beneficiary, ether(amount), { from: owner });
+            expectEvent(receipt, 'Transfer', {
+                from: constants.ZERO_ADDRESS,
+                to: beneficiary,
+                value: ether(amount),
+            });
+        }
+    });
+}
+
+exports.addMinter = (minter, sender, desc, reject, msg) => {
+    //测试添加暂停管理员
+    it(desc + ': addMinter()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.addMinter(minter, { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.addMinter(minter, { from: sender });
+            expectEvent(receipt, 'MinterAdded', {
+                account: minter
+            });
+        }
+    });
+}
+exports.isMinter = (minter, isMinter, desc) => {
+    //测试账户拥有暂停权
+    it(desc + ': isMinter()', async function () {
+        assert.equal(isMinter, await ERC20Instance.isMinter(minter));
+    });
+}
+exports.renounceMinter = (minter, desc, reject, msg) => {
+    //测试撤销暂停管理员
+    it(desc + ': renounceMinter()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.renounceMinter({ from: minter }), msg);
+        } else {
+            let receipt = await ERC20Instance.renounceMinter({ from: minter });
+            expectEvent(receipt, 'MinterRemoved', {
+                account: minter
+            });
+        }
+    });
+}
+
+exports.addPauser = (pauser, sender, desc, reject, msg) => {
+    //测试添加暂停管理员
+    it(desc + ': addPauser()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.addPauser(pauser, { from: sender }), msg);
+        } else {
+            let receipt = await ERC20Instance.addPauser(pauser, { from: sender });
+            expectEvent(receipt, 'PauserAdded', {
+                account: pauser
+            });
+        }
+    });
+}
+exports.isPauser = (pauser, isPauser, desc) => {
+    //测试账户拥有暂停权
+    it(desc + ': isPauser()', async function () {
+        assert.equal(isPauser, await ERC20Instance.isPauser(pauser));
+    });
+}
+exports.renouncePauser = (pauser, desc, reject, msg) => {
+    //测试撤销暂停管理员
+    it(desc + ': renouncePauser()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.renouncePauser({ from: pauser }), msg);
+        } else {
+            let receipt = await ERC20Instance.renouncePauser({ from: pauser });
+            expectEvent(receipt, 'PauserRemoved', {
+                account: pauser
+            });
+        }
+    });
+}
+exports.paused = (paused, desc) => {
+    //测试是否已暂停
+    it(desc + ': paused()', async function () {
+        assert.equal(paused, await ERC20Instance.paused());
+    });
+}
+exports.pause = (pauser, desc, reject, msg) => {
+    //测试撤销暂停管理员
+    it(desc + ': pause()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.pause({ from: pauser }), msg);
+        } else {
+            let receipt = await ERC20Instance.pause({ from: pauser });
+            expectEvent(receipt, 'Paused', {
+                account: pauser
+            });
+        }
+    });
+}
+exports.unpause = (pauser, desc, reject, msg) => {
+    //测试恢复合约
+    it(desc + ': unpause()', async function () {
+        if (reject) {
+            await assert.rejects(ERC20Instance.unpause({ from: pauser }), msg);
+        } else {
+            let receipt = await ERC20Instance.unpause({ from: pauser });
+            expectEvent(receipt, 'Unpaused', {
+                account: pauser
+            });
+        }
+    });
 }

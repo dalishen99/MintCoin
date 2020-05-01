@@ -1,73 +1,68 @@
-const assert = require('assert');
-const { contract, accounts } = require('@openzeppelin/test-environment');
-const { ether } = require('@openzeppelin/test-helpers');
+const { contract, accounts,web3 } = require('@openzeppelin/test-environment');
+const { ether, time, constants } = require('@openzeppelin/test-helpers');
 const CrowdsaleContract = contract.fromArtifact("ERC20IndividuallyCappedCrowdsale");
 const ERC20Contract = contract.fromArtifact("ERC20FixedSupply");
-const Crowdsale = require('../inc/Crowdsale');
 const ERC20 = require('../inc/ERC20');
-
-totalSupply = 1000000000;//发行总量
+const Crowdsale = require('../inc/Crowdsale');
+//有配额众筹
+const totalSupply = '10000';//发行总量
 [owner, sender, receiver, purchaser, beneficiary] = accounts;
-value = ether('10');
-eth = ether('10');
-rate = 100;//兑换比例1ETH:100ERC20
-describe("有配额的众筹", async function () {
-    const param = [
-        "My Golden Coin",   //代币名称
-        "MGC",              //代币缩写
-        18,                 //精度
-        totalSupply         //发行总量
-    ];
-    ERC20Instance = await ERC20(ERC20Contract, param);
+EthValue = '10';
+rate = '1000';
+TokenValue = (EthValue * rate).toString();
+describe("有配额众筹", function () {
+    it('布署代币合约', async function () {
+        ERC20Param = [
+            "My Golden Coin",   //代币名称
+            "MGC",              //代币缩写
+            18,                 //精度
+            totalSupply         //发行总量
+        ];
+        ERC20Instance = await ERC20Contract.new(...ERC20Param, { from: owner });
+    });
+    it('布署众筹合约', async function () {
+        CrowdsaleParam = [
+            rate,                                       //兑换比例1ETH:100ERC20
+            sender,                                     //接收ETH受益人地址
+            ERC20Instance.address,                      //代币地址
+            owner,                                      //代币从这个地址发送
+        ]
+        CrowdsaleInstance = await CrowdsaleContract.new(...CrowdsaleParam, { from: owner });
+    });
 });
-describe("布署有配额众筹合约...", async function () {
-    it('布署合约并且批准给众筹账户', async function () {
-        CrowdsaleInstance = await CrowdsaleContract.new(
-            rate,                               //兑换比例1ETH:100ERC20
-            sender,                        //接收ETH受益人地址
-            ERC20Instance.address,              //代币地址
-            owner,                        //代币从这个地址发送
-            { from: owner }
-        );
-        //在布署之后必须将发送者账户中的代币批准给众筹合约
-        await ERC20Instance.approve(CrowdsaleInstance.address, ether(totalSupply.toString()), { from: owner });
+describe("布署后首先执行", function () {
+    it('将代币批准给众筹合约', async function () {
+        await ERC20Instance.approve(CrowdsaleInstance.address, ether(totalSupply), { from: owner });
     });
-    //测试通用的众筹合约
-    await Crowdsale(rate, true);
 });
-describe("测试有配额众筹合约的特殊方法", function () {
-    //测试设置配额方法
-    it('设置配额方法: setCap()', async function () {
-        assert.doesNotReject(CrowdsaleInstance.setCap(beneficiary, eth, { from: owner }));
-    });
-    //测试获取账户配额方法
-    it('获取账户配额方法: getCap()', async function () {
-        assert.equal(eth.toString(), (await CrowdsaleInstance.getCap(beneficiary)).toString());
-    });
-    //重新测试购买代币方法
-    it('重新测试购买代币方法: buyTokens()', async function () {
-        await CrowdsaleInstance.buyTokens(beneficiary, { value: eth, from: beneficiary });
-        assert.equal(ether((10 * rate).toString()).toString(), (await ERC20Instance.balanceOf(beneficiary)).toString());
-    });
-    //重新测试众筹收入
-    it('重新测试众筹收入: weiRaised()', async function () {
-        assert.equal(eth.toString(), (await CrowdsaleInstance.weiRaised()).toString());
-    });
-    //测试获取账户贡献方法
-    it('获取账户贡献方法: getContribution()', async function () {
-        assert.equal(eth.toString(), (await CrowdsaleInstance.getContribution(beneficiary)).toString());
-    });
-    //测试添加配额管理员
-    it('添加配额管理员: addCapper()', async function () {
-        assert.doesNotReject(CrowdsaleInstance.addCapper(sender, { from: owner }));
-    });
-    //测试账户是配额管理员
-    it('账户是配额管理员: isCapper()', async function () {
-        assert.ok(await CrowdsaleInstance.isCapper(sender));
-    });
-    //测试撤销配额管理员
-    it('撤销配额管理员: renounceCapper()', async function () {
-        await CrowdsaleInstance.renounceCapper({ from: sender });
-        assert.ok(!await CrowdsaleInstance.isCapper(sender));
-    });
+describe("测试ERC20合约基本信息", function () {
+    ERC20.datail();
+});
+describe("测试通用的众筹方法", function () {
+    Crowdsale.token();
+    Crowdsale.wallet(sender);
+    Crowdsale.rate(rate);
+    Crowdsale.tokenWallet(owner);
+});
+describe("测试设置配额管理员的方法", function () {
+    Crowdsale.addCapper(sender, sender, '无权添加配额管理员错误', true, /CapperRole: caller does not have the Capper role/);
+    Crowdsale.addCapper(sender, owner, '添加配额管理员');
+    Crowdsale.addCapper(sender, owner, '重复添加配额管理员错误', true, /Roles: account already has role/);
+    Crowdsale.isCapper(sender, true, '验证账户是配额管理员');
+    Crowdsale.renounceCapper(sender, '撤销配额管理员');
+    Crowdsale.isCapper(sender, false, '验证账户不是配额管理员');
+    Crowdsale.renounceCapper(sender, '重复撤销配额管理员错误', true, /Roles: account does not have role/);
+});
+describe("测试众筹合约的配额管理方法", function () {
+    Crowdsale.setCap(sender, owner, EthValue, '设置配额');
+    Crowdsale.setCap(purchaser, sender, EthValue, '无权设置配额', true, /CapperRole: caller does not have the Capper role/);
+    Crowdsale.getCap(sender, EthValue, '验证账户配额');
+    Crowdsale.getContribution(sender, '0', '验证账户贡献为0');//
+
+    Crowdsale.buyTokens(sender, EthValue, '购买代币');
+    Crowdsale.weiRaised(EthValue, '众筹收入为'+EthValue);
+    ERC20.balanceOf(TokenValue.toString(), sender, '购买者账户余额为'+TokenValue)
+    Crowdsale.remainingTokens(totalSupply - TokenValue,'配额中剩余的代币数量');
+    Crowdsale.getContribution(sender, EthValue, '验证账户贡献为'+EthValue);//
+
 });
