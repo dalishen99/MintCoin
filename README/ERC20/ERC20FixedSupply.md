@@ -2,6 +2,7 @@
 
 ## 固定总量代币
 > 固定总量代币是最基础的ERC20代币,包含了代币名称,代币缩写,精度和发型总量四个基本信息.
+
 [合约文件: FixedSupply.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20FixedSupply.sol)
 
 [测试脚本: FixedSupply.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20FixedSupply.js)
@@ -12,7 +13,7 @@
 ```javascript
 string memory name,     //代币名称
 string memory symbol,   //代币缩写
-uint8 decimals ,        //精度
+uint8 decimals,         //精度
 uint256 totalSupply     //发行总量
 ```
 ### 调用方法

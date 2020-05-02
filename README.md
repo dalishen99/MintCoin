@@ -10,7 +10,7 @@
 - [发行代币同时锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/IssueTokenWithTimelock.md)
 - [发行代币之后锁仓](https://github.com/Fankouzu/MintCoin/blob/master/README/ERC20/IssueTokenBeforeTimelock.md)
 ### 发行众筹代币
-- [通用的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/AllowanceCrowdsale.md)
+- [通用的众筹](./README/Crowdsale/AllowanceCrowdsale.md)
 - [可增发的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/MintedCrowdsale.md)
 - [有封顶的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/CappedCrowdsale.md)
 - [有配额的众筹](https://github.com/Fankouzu/MintCoin/blob/master/README/Crowdsale/IndividuallyCappedCrowdsale.md)
