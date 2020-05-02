@@ -49,7 +49,7 @@ describe("布署后首先执行", function () {
     ERC20.renounceMinter(owner, '撤销发送者的铸造权');
 });
 describe("测试ERC20合约基本信息", function () {
-    ERC20.datail();
+    ERC20.detail();
 });
 describe("测试ERC20合约的标准方法", async function () {
     ERC20.balanceOf(totalSupply, owner, '创建者账户余额');

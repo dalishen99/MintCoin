@@ -43,7 +43,7 @@ describe("布署后首先执行", function () {
     });
 });
 describe("测试ERC20合约基本信息", function () {
-    ERC20.datail();
+    ERC20.detail();
 });
 describe("测试通用的众筹方法", function () {
     Crowdsale.token();

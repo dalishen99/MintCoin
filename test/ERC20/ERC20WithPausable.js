@@ -21,7 +21,7 @@ describe("可暂停代币", function () {
 });
 
 describe("测试ERC20合约基本信息", function () {
-    ERC20.datail();
+    ERC20.detail();
 });
 describe("测试ERC20合约的标准方法", async function () {
     ERC20.balanceOf(totalSupply, owner, '创建者账户余额');

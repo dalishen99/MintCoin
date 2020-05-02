@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { ether, constants, expectEvent } = require('@openzeppelin/test-helpers');
-exports.datail = () => {
+exports.detail = () => {
     it('代币名称: name()', async function () {
         assert.equal(ERC20Param[0], await ERC20Instance.name());
     });
