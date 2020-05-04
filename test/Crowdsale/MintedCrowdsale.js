@@ -1,6 +1,6 @@
 const { contract, accounts, web3 } = require('@openzeppelin/test-environment');
 const { ether, time, constants } = require('@openzeppelin/test-helpers');
-const CrowdsaleContract = contract.fromArtifact("ERC20MintedCrowdsale");
+const CrowdsaleContract = contract.fromArtifact("MintedCrowdsaleContract");
 const ERC20Contract = contract.fromArtifact("ERC20WithMintable");
 const ERC20 = require('../inc/ERC20');
 const Crowdsale = require('../inc/Crowdsale');

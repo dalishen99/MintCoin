@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/crowdsale/validation/TimedCrowdsale.sol";
 
 
 //可终结的众筹
-contract ERC20FinalizableCrowdsale is
+contract FinalizableCrowdsaleContract is
     Crowdsale,
     AllowanceCrowdsale,
     TimedCrowdsale,

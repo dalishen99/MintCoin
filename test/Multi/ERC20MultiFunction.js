@@ -10,7 +10,7 @@ EthValue = '10';
 rate = '1000';
 const cap = '200000';
 TokenValue = (EthValue * rate).toString();
-describe("布署合约", function () {
+describe("ERC20多功能代币", function () {
     it('布署代币合约', async function () {
         ERC20Param = [
             "My Golden Coin",   //代币名称

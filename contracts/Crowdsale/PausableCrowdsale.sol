@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/crowdsale/emission/AllowanceCrowdsale.sol";
 import "@openzeppelin/contracts/crowdsale/validation/PausableCrowdsale.sol";
 
 //可暂停的众筹
-contract ERC20PausableCrowdsale is Crowdsale, AllowanceCrowdsale, PausableCrowdsale {
+contract PausableCrowdsaleContract is Crowdsale, AllowanceCrowdsale, PausableCrowdsale {
     constructor(
         uint256 rate,           // 兑换比例
         address payable wallet, // 接收ETH受益人地址

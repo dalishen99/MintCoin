@@ -10,6 +10,9 @@ exports.detail = () => {
     it('代币基本地址: baseURI()', async function () {
         assert.equal(ERC721Param[2], await ERC721Instance.baseURI());
     });
+    it('合约实现接口: supportsInterface()', async function () {
+        assert.ok(await ERC721Instance.supportsInterface('0x80ac58cd'));
+    });
 }
 exports.awardItem = (account, uri, desc, reject, msg) => {
     //添加代币方法

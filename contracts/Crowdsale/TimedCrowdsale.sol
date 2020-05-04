@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/crowdsale/emission/AllowanceCrowdsale.sol";
 import "@openzeppelin/contracts/crowdsale/validation/TimedCrowdsale.sol";
 
 //有时限的众筹
-contract ERC20TimedCrowdsale is Crowdsale, AllowanceCrowdsale, TimedCrowdsale {
+contract TimedCrowdsaleContract is Crowdsale, AllowanceCrowdsale, TimedCrowdsale {
     constructor(
         uint256 rate,           // 兑换比例
         address payable wallet, // 接收ETH受益人地址

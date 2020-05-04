@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/crowdsale/emission/AllowanceCrowdsale.sol";
 import "@openzeppelin/contracts/crowdsale/validation/CappedCrowdsale.sol";
 
 //有封顶的众筹
-contract ERC20CappedCrowdsale is Crowdsale, AllowanceCrowdsale, CappedCrowdsale {
+contract CappedCrowdsaleContract is Crowdsale, AllowanceCrowdsale, CappedCrowdsale {
     constructor(
         uint256 rate,           // 兑换比例
         address payable wallet, // 接收ETH受益人地址

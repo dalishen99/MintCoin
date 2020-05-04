@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/crowdsale/Crowdsale.sol";
 import "@openzeppelin/contracts/crowdsale/emission/AllowanceCrowdsale.sol";
 
 //普通的众筹
-contract ERC20AllowanceCrowdsale is Crowdsale, AllowanceCrowdsale {
+contract AllowanceCrowdsaleContract is Crowdsale, AllowanceCrowdsale {
     constructor(
         uint256 rate,           // 兑换比例
         address payable wallet, // 接收ETH受益人地址

@@ -13,7 +13,7 @@ rate = '1000';
 const goal = '15';
 const cap = '20'; //封顶数额
 TokenValue = (EthValue * rate).toString();
-describe("布署合约", function () {
+describe("多功能众筹合约", function () {
     it('布署代币合约', async function () {
         ERC20Param = [
             "My Golden Coin",   //代币名称

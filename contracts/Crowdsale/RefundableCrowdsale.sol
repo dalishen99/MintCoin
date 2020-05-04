@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/crowdsale/distribution/RefundablePostDeliveryCro
 
 
 //不成功退款的众筹
-contract ERC20RefundableCrowdsale is
+contract RefundableCrowdsaleContract is
     Crowdsale,
     AllowanceCrowdsale,
     RefundablePostDeliveryCrowdsale
