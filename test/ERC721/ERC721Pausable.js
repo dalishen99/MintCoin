@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { contract, accounts } = require('@openzeppelin/test-environment');
 const { constants } = require('@openzeppelin/test-helpers');
-const ERC721Contract = contract.fromArtifact("ERC721FullContract");
+const ERC721Contract = contract.fromArtifact("ERC721PausableContract");
 const ERC721 = require('../inc/ERC721');
 //全功能ERC721代币
 [owner, sender, receiver, purchaser, beneficiary] = accounts;
@@ -18,6 +18,15 @@ describe("全功能ERC721代币", function () {
         ];
         ERC721Instance = await ERC721Contract.new(...ERC721Param, { from: owner });
     });
+});
+describe("测试设置暂停管理员的方法", function () {
+    ERC721.addPauser(sender, sender, '无权添加暂停管理员错误', true, /PauserRole: caller does not have the Pauser role/);
+    ERC721.addPauser(sender, owner, '添加暂停管理员');
+    ERC721.addPauser(sender, owner, '重复添加暂停管理员错误', true, /Roles: account already has role/);
+    ERC721.isPauser(sender, true, '验证账户是暂停管理员');
+    ERC721.renouncePauser(sender, '撤销暂停管理员');
+    ERC721.isPauser(sender, false, '验证账户不是暂停管理员');
+    ERC721.renouncePauser(sender, '重复撤销暂停管理员错误', true, /Roles: account does not have role/);
 });
 describe("测试ERC721合约", async function () {
     ERC721.detail();
@@ -83,6 +92,19 @@ describe("测试ERC721合约", async function () {
 
     ERC721.tokenByIndex('2', '3', '根据代币索引获取代币id');
     ERC721.tokenByIndex('10', false, '根据错误的代币索引获取代币id', true, /ERC721Enumerable: global index out of bounds/);
+});
+describe("测试众筹合约的暂停管理方法", function () {
+    ERC721.paused(false, '验证合约未暂停');
+    ERC721.pause(owner, '暂停合约');
+    ERC721.paused(true, '验证合约已暂停');
+    ERC721.pause(owner, '验证重复暂停错误', true, /Pausable: paused/);
+    ERC721.pause(sender, '验证无权暂停错误', true, /PauserRole: caller does not have the Pauser role/);
+    ERC721.awardItem(receiver, tokenURI, '暂停后添加代币错误', true, /Pausable: paused/);
+    ERC721.unpause(owner, '恢复暂停合约');
+    ERC721.paused(false, '验证合约未暂停');
+    ERC721.unpause(owner, '验证重复恢复暂停错误', true, /Pausable: not paused/);
+    ERC721.unpause(sender, '验证无权恢复暂停错误', true, /PauserRole: caller does not have the Pauser role/);
+    ERC721.awardItem(receiver, tokenURI, '恢复后再次添加代币');
 });
 describe("测试安全发送到合约方法", function () {
     it('布署ERC721合约', async function () {

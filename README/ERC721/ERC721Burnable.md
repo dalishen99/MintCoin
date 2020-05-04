@@ -1,13 +1,14 @@
 # MintCoin崔棉大师的花式发币法
 
-## 全功能ERC721代币
+## 可销毁的ERC721代币
 > ERC721代币属于非同质化代币，全功能的ERC721代币包含ERC721的元数据和可枚举功能.
+> 可销毁的ERC721代币是指在全功能的ERC721代币基础上增加了销毁的逻辑,账户只能销毁自己持有的代币.
 
-[合约文件: ERC721Full.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC721/ERC721Full.sol)
+[合约文件: ERC721Burnable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC721/ERC721Burnable.sol)
 
-[测试脚本: ERC721Full.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC721/ERC721Full.js)
+[测试脚本: ERC721Burnable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC721/ERC721Burnable.js)
 
-[布署脚本: 21_deploy_ERC721Full.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/21_deploy_ERC721Full.js)
+[布署脚本: 23_deploy_ERC721Burnable.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/23_deploy_ERC721Burnable.js)
 
 ### 在布署合约时定义以下变量
 ```javascript
@@ -49,4 +50,6 @@ tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256)
 totalSupply() public view returns (uint256)
 //通过索引获取代币
 tokenByIndex(uint256 index) public view returns (uint256)
+//销毁代币方法
+burn(uint256 tokenId) public 
 ```

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { contract, accounts } = require('@openzeppelin/test-environment');
 const { constants } = require('@openzeppelin/test-helpers');
-const ERC721Contract = contract.fromArtifact("ERC721FullContract");
+const ERC721Contract = contract.fromArtifact("ERC721BurnableContract");
 const ERC721 = require('../inc/ERC721');
 //全功能ERC721代币
 [owner, sender, receiver, purchaser, beneficiary] = accounts;
@@ -83,6 +83,11 @@ describe("测试ERC721合约", async function () {
 
     ERC721.tokenByIndex('2', '3', '根据代币索引获取代币id');
     ERC721.tokenByIndex('10', false, '根据错误的代币索引获取代币id', true, /ERC721Enumerable: global index out of bounds/);
+
+    ERC721.burn(beneficiary, '3', '错误的用户销毁代币', true, /ERC721Burnable: caller is not owner nor approved/);
+    ERC721.burn(receiver, '3', '销毁代币');
+    ERC721.burn(receiver, '3', '重复销毁代币错误', true, /ERC721: operator query for nonexistent token/);
+
 });
 describe("测试安全发送到合约方法", function () {
     it('布署ERC721合约', async function () {
@@ -94,9 +99,9 @@ describe("测试安全发送到合约方法", function () {
         ERC721Holder = await ERC721Contract.new(...ERC721Param, { from: owner });
     });
     it('验证安全发送到合约地址: safeTransferFrom()', async function () {
-        await ERC721Instance.safeTransferFrom(receiver, ERC721Holder.address, '3',  { from: receiver });
+        await ERC721Instance.safeTransferFrom(receiver, ERC721Holder.address, '1',  { from: receiver });
     });
     it('根据tokenID验证账户地址: ownerOf()', async function () {
-        assert.equal(ERC721Holder.address, await ERC721Instance.ownerOf('3'));
+        assert.equal(ERC721Holder.address, await ERC721Instance.ownerOf('1'));
     });
 });

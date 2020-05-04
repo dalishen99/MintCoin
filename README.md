@@ -20,6 +20,15 @@
 - [可终结的众筹](./README/Crowdsale/FinalizableCrowdsale.md)
 - [到期后交付的众筹](./README/Crowdsale/PostDeliveryCrowdsale.md)
 - [不成功退款的众筹](./README/Crowdsale/RefundableCrowdsale.md)
+### 多功能代币
+- [多功能ERC20代币,可增发,可销毁,可暂停,有封顶](./README/Multi/ERC20MultiFunction.md)
+- [多功能众筹合约:可增发,可销毁,有封顶,有配额,可暂停,有时限,白名单,成功后交付,不成功退款](./README/Multi/MultiFunctionCrowdsale.md)
+
+### 发行ERC721代币
+- [全功能ERC721代币](./README/ERC721/ERC721Full.md)
+- [可销毁的ERC721代币](./README/Crowdsale/ERC721Burnable.md)
+- [可铸造ERC721代币](./README/Crowdsale/ERC721Mintable.md)
+- [可暂停的ERC721代币](./README/Crowdsale/ERC721Pausable.md)
 ---
 ### 安装
 ```shell

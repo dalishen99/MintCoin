@@ -1,13 +1,13 @@
 # MintCoin崔棉大师的花式发币法
 
-## 全功能ERC721代币
+## 可暂停的ERC721代币
 > ERC721代币属于非同质化代币，全功能的ERC721代币包含ERC721的元数据和可枚举功能.
 
-[合约文件: ERC721Full.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC721/ERC721Full.sol)
+[合约文件: ERC721Pausable.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC721/ERC721Pausable.sol)
 
-[测试脚本: ERC721Full.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC721/ERC721Full.js)
+[测试脚本: ERC721Pausable.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC721/ERC721Pausable.js)
 
-[布署脚本: 21_deploy_ERC721Full.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/21_deploy_ERC721Full.js)
+[布署脚本: 24_deploy_ERC721Pausable.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/24_deploy_ERC721Pausable.js)
 
 ### 在布署合约时定义以下变量
 ```javascript
@@ -24,7 +24,7 @@ symbol() public view returns (string memory)
 //token的基础链接地址
 baseURI() external view returns (string memory) 
 //添加代币方法，传入所有者地址和Token的数据链接地址
-awardItem(address player, string memory tokenURI) public returns (uint256)
+awardItem(address player, string memory tokenURI) public whenNotPaused() returns (uint256)
 //根据tokenid返回数据连接地址
 tokenURI(uint256 tokenId) external view returns (string memory)
 //返回指定账户拥有的代币数量
@@ -49,4 +49,16 @@ tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256)
 totalSupply() public view returns (uint256)
 //通过索引获取代币
 tokenByIndex(uint256 index) public view returns (uint256)
+//返回指定地址是否拥有暂停权 
+isPauser(address account) public view returns (bool)       
+//给指定地址添加暂停权限,只有通过有暂停权的地址添加
+addPauser(address account) public onlyPauser              
+//撤销当前发送账户的暂停权
+renouncePauser() public        
+//返回合约当前是否已经暂停                           
+paused() public view returns (bool)                    
+//暂停合约   
+pause() public onlyPauser whenNotPaused         
+//恢复合约          
+unpause() public onlyPauser whenPaused
 ```

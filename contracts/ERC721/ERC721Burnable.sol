@@ -1,10 +1,11 @@
 pragma solidity ^0.5.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Holder.sol";
 import "@openzeppelin/contracts/drafts/Counters.sol";
-//全功能ERC721代币
-contract ERC721FullContract is ERC721Full, ERC721Holder {
+//可销毁的ERC721代币
+contract ERC721BurnableContract is ERC721Full, ERC721Burnable, ERC721Holder{
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 

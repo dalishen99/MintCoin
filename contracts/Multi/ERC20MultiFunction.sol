@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Capped.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
 
-//ERC20多功能代币,可增发,可销毁,可暂停,有封顶
+//多功能ERC20代币,可增发,可销毁,可暂停,有封顶
 contract ERC20MultiFunction is
     ERC20,
     ERC20Detailed,
