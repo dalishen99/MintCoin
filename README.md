@@ -27,6 +27,7 @@
 - [代币迁移合约](./README/Multi/ERC20Migrator.md)
 - [可快照的ERC20代币](./README/Multi/ERC20WithSnapshot.md)
 - [股份制受益人合约](./README/Multi/CrowdsalePaymentSplitter.md)
+- [分期释放合约](./README/Multi/ERC20WithTokenVesting.md)
 
 ### 发行ERC721代币
 - [全功能ERC721代币](./README/ERC721/ERC721Full.md)

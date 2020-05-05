@@ -18,6 +18,10 @@ IERC20 legacyToken,    //旧ERC20合约地址
 ```javascript
 //在布署之后所有旧合约的用户必须将账户中的代币批准给迁移合约
 token.approve(migrator.address, ALL_TOKEN_AMOUNT);
+//给新代币添加迁移合约的铸造权
+newTokentoken.addMinter(migrator.address);        
+//撤销当前账户的铸造权
+newTokentoken.renounceMinter(); 
 //设置新代币合约地址并开始迁移
 migrator.beginMigration(newToken.address);
 ```
