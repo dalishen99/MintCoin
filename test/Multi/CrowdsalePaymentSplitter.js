@@ -131,4 +131,7 @@ describe("测试股份制合约释放方法", function () {
         assert.equal('60', parseInt(web3.utils.fromWei((await web3.eth.getBalance(shareholder3) - shareholder1Balance).toString(), 'ether')));
         assert.equal('80', parseInt(web3.utils.fromWei((await web3.eth.getBalance(shareholder4) - shareholder1Balance).toString(), 'ether')));
     });
+    it('总释放额: totalReleased()', async function () {
+        assert.equal(ether('200').toString(), (await PaymentInstance.totalReleased()).toString());
+    });
 });

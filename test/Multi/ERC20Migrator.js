@@ -1,7 +1,6 @@
 const assert = require('assert');
 const { contract, accounts, web3 } = require('@openzeppelin/test-environment');
 const { ether, time, expectEvent } = require('@openzeppelin/test-helpers');
-
 const ERC20FixedSupply = contract.fromArtifact("ERC20FixedSupply");
 const ERC20Migrator = contract.fromArtifact("ERC20MigratorContract");
 const ERC20WithMintable = contract.fromArtifact("ERC20WithMintable");
