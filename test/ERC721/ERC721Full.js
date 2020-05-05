@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { contract, accounts } = require('@openzeppelin/test-environment');
-const { constants } = require('@openzeppelin/test-helpers');
+const { constants,makeInterfaceId } = require('@openzeppelin/test-helpers');
 const ERC721Contract = contract.fromArtifact("ERC721FullContract");
 const ERC721 = require('../inc/ERC721');
 //全功能ERC721代币
@@ -99,4 +99,33 @@ describe("测试安全发送到合约方法", function () {
     it('根据tokenID验证账户地址: ownerOf()', async function () {
         assert.equal(ERC721Holder.address, await ERC721Instance.ownerOf('3'));
     });
+    it('验证支持接口: supportsInterface()', async function () {
+        let interfaces = [
+            'balanceOf(address)',
+            'ownerOf(uint256)',
+            'approve(address,uint256)',
+            'getApproved(uint256)',
+            'setApprovalForAll(address,bool)',
+            'isApprovedForAll(address,address)',
+            'transferFrom(address,address,uint256)',
+            'safeTransferFrom(address,address,uint256)',
+            'safeTransferFrom(address,address,uint256,bytes)'
+        ]
+        assert.ok(await ERC721Instance.supportsInterface(makeInterfaceId.ERC165(interfaces)));;
+    });
+    // it(': supportsInterface()', async function () {
+    //     let interfaces = [
+    //         'balanceOf(address)',
+    //         'ownerOf(uint256)',
+    //         'approve(address,uint256)',
+    //         'getApproved(uint256)',
+    //         'setApprovalForAll(address,bool)',
+    //         'isApprovedForAll(address,address)',
+    //         'transferFrom(address,address,uint256)',
+    //         'safeTransferFrom(address,address,uint256)',
+    //         'safeTransferFrom(address,address,uint256,bytes)'
+    //     ]
+    //     console.log(makeInterfaceId.ERC1820('balanceOf(address)'));
+    //     //assert.ok(await ERC721Instance.supportsInterface());;
+    // });
 });

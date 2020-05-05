@@ -10,6 +10,17 @@ const ERC20 = require('../inc/ERC20');
 const totalSupply = '1000000000';//发行总量
 [owner, sender, receiver, purchaser, beneficiary] = accounts;
 EthValue = '100';
+let balanceBefore = [];
+
+migrateBalance = async (account) => {
+    await ERC20Instance.approve(ERC20MigratorInstance.address, balanceBefore[account], { from: account });
+    await ERC20MigratorInstance.migrate(account,balanceBefore[account]);
+}
+
+assertBalanceAfter = async (account) => {
+    let balanceAfter = await ERC20WithMintableInstance.balanceOf(account);
+    assert.equal(balanceBefore[account].toString(), balanceAfter.toString());
+}
 //代币迁移合约
 describe("代币迁移合约", function () {
     it('布署旧代币合约', async function () {
@@ -63,11 +74,15 @@ describe("将旧合约代币分配给一些账户", function () {
     ERC20.transfer(owner, receiver, (EthValue*10).toString(), '代币发送给receiver');
     ERC20.transfer(owner, purchaser, (EthValue*15).toString(), '代币发送给purchaser');
     ERC20.transfer(owner, beneficiary, (EthValue*25).toString(), '代币发送给beneficiary');
+    it('记录账户旧合约余额: balanceOf()', async function () {
+        balanceBefore[owner] = await ERC20Instance.balanceOf(owner);
+        balanceBefore[sender] = await ERC20Instance.balanceOf(sender);
+        balanceBefore[receiver] = await ERC20Instance.balanceOf(receiver);
+        balanceBefore[purchaser] = await ERC20Instance.balanceOf(purchaser);
+        balanceBefore[beneficiary] = await ERC20Instance.balanceOf(beneficiary);
+    });
 });
 describe("开始迁移", function () {
-    it('记录owner旧合约余额: balanceOf()', async function () {
-        ownerBalanceBefore = await ERC20Instance.balanceOf(owner);
-    });
     it('开始迁移: beginMigration()', async function () {
         await ERC20MigratorInstance.beginMigration(ERC20WithMintableInstance.address,{from:owner});
     });
@@ -77,9 +92,24 @@ describe("开始迁移", function () {
     it('迁移owner账户全部余额方法: migrateAll()', async function () {
         await ERC20MigratorInstance.migrateAll(owner);
     });
-    it('验证owner迁移后新合约余额: balanceOf()', async function () {
-        let ownerBalanceAfter = await ERC20WithMintableInstance.balanceOf(owner);
-        assert.equal(ownerBalanceBefore.toString(), ownerBalanceAfter.toString());
+    it('迁移指定账户余额方法: migrate()', async function () {
+        await migrateBalance(sender);
+        await migrateBalance(receiver);
+        await migrateBalance(purchaser);
+        await migrateBalance(beneficiary);
+    });
+});
+describe("验证余额", function () {
+    it('验证账户迁移后新合约余额: balanceOf()', async function () {
+        await assertBalanceAfter(owner);
+        await assertBalanceAfter(sender);
+        await assertBalanceAfter(receiver);
+        await assertBalanceAfter(purchaser);
+        await assertBalanceAfter(beneficiary);
     });
     ERC20.balanceOf('0', owner, '验证迁移后旧合约余额');
+    ERC20.balanceOf('0', sender, '验证迁移后旧合约余额');
+    ERC20.balanceOf('0', receiver, '验证迁移后旧合约余额');
+    ERC20.balanceOf('0', purchaser, '验证迁移后旧合约余额');
+    ERC20.balanceOf('0', beneficiary, '验证迁移后旧合约余额');
 });

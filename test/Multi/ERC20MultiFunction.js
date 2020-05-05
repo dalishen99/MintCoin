@@ -1,4 +1,3 @@
-const assert = require('assert');
 const { contract, accounts } = require('@openzeppelin/test-environment');
 const { ether, constants } = require('@openzeppelin/test-helpers');
 const ERC20Contract = contract.fromArtifact("ERC20MultiFunction");
@@ -27,7 +26,7 @@ describe("测试ERC20合约基本信息", function () {
     ERC20.detail();
     ERC20.cap(cap, '验证封顶额');
 });
-describe("测试ERC20合约的标准方法", async function () {
+describe("测试ERC20合约的标准方法", function () {
     ERC20.balanceOf(totalSupply, owner, '创建者账户余额');
     ERC20.transfer(owner, constants.ZERO_ADDRESS, TokenValue, '代币发送,0地址错误', true, /ERC20: transfer to the zero address/);
     ERC20.transfer(owner, receiver, TokenValue, '代币发送');
@@ -45,7 +44,7 @@ describe("测试ERC20合约的标准方法", async function () {
     ERC20.allowance(receiver, purchaser, '0', '批准数额归零');//receiver=>purchaser = 0
     ERC20.decreaseAllowance(receiver, purchaser, TokenValue, '超额减少批准额', true, /ERC20: decreased allowance below zero/);
 });
-describe("测试ERC20合约的销毁方法", async function () {
+describe("测试ERC20合约的销毁方法", function () {
     ERC20.burn(beneficiary, TokenValue, '销毁代币');
     ERC20.balanceOf('0', beneficiary, '销毁后余额归零');
     ERC20.burn(beneficiary, TokenValue, '超额销毁', true, /ERC20: burn amount exceeds balance/);
