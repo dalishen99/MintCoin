@@ -33,8 +33,7 @@
   "mocha": {
     "timeout": 100000,
     "useColors": true,
-    "reporter": "eth-gas-reporter",
-    "reporterOptions" : { "excludeContracts": ["Migrations"] }
+    "reporter": "spec"
   },
   "keywords": [],
   "author": "",

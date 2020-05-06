@@ -34,6 +34,9 @@
 - [可销毁的ERC721代币](./README/Crowdsale/ERC721Burnable.md)
 - [可铸造ERC721代币](./README/Crowdsale/ERC721Mintable.md)
 - [可暂停的ERC721代币](./README/Crowdsale/ERC721Pausable.md)
+
+### 发行ERC777代币
+- [ERC777代币](./README/ERC777/ERC777Contract.md)
 ---
 ### 安装
 ```shell

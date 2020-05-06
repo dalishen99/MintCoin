@@ -1,4 +1,6 @@
 const ERC777Contract = artifacts.require("ERC777Contract");
+const TokensSender = artifacts.require("TokensSender");
+const TokensRecipient = artifacts.require("TokensRecipient");
 const { singletons } = require('@openzeppelin/test-helpers');
 
 module.exports = async (deployer, network, accounts) => {
@@ -13,4 +15,6 @@ module.exports = async (deployer, network, accounts) => {
         [defaultOperators]    //默认操作员
     ]
     await deployer.deploy(ERC777Contract, ...param);
+    await deployer.deploy(TokensSender, true);
+    await deployer.deploy(TokensRecipient, true);
 };
