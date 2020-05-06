@@ -19,6 +19,7 @@
     "@openzeppelin/test-environment": "^0.1.4",
     "@openzeppelin/test-helpers": "^0.5.5",
     "chai": "^4.2.0",
+    "eth-gas-reporter": "^0.2.17",
     "mocha": "^7.1.2"
   },
   "scripts": {
@@ -26,7 +27,14 @@
     "migrate": "node script/migrate.js",
     "compile": "truffle compile",
     "ganache": "ganache-cli -e 1000",
-    "node": "node script/network.js"
+    "node": "node script/network.js",
+    "mocha": "mocha --exit --recursive"
+  },
+  "mocha": {
+    "timeout": 100000,
+    "useColors": true,
+    "reporter": "eth-gas-reporter",
+    "reporterOptions" : { "excludeContracts": ["Migrations"] }
   },
   "keywords": [],
   "author": "",

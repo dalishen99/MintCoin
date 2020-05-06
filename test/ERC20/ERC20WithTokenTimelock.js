@@ -8,9 +8,9 @@ const ERC20 = require('../inc/ERC20');
 const totalSupply = '10000';//发行总量
 [owner, sender, receiver, purchaser, beneficiary] = accounts;
 EthValue = '10';
-lockAmount = '1000'; 
+const lockAmount = '1000'; 
 
-describe("固定总量代币", function () {
+describe("可锁仓代币", function () {
     it('布署代币合约', async function () {
         ERC20Param = [
             "My Golden Coin",   //代币名称

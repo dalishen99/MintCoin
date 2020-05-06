@@ -104,9 +104,8 @@ module.exports = {
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
-    timeout: 100000,
-    useColors: true,
-    reporter: 'spec' //这里是彩蛋,把spec换成nyan,然后运行npm run test试一下
+    reporter: 'eth-gas-reporter',
+    reporterOptions: { excludeContracts: ['Migrations'] }
   },
 
   // Configure your compilers

@@ -8,8 +8,8 @@ const ERC20 = require('../inc/ERC20');
 const totalSupply = '100000';//发行总量
 [owner, sender, receiver, purchaser, beneficiary] = accounts;
 EthValue = '10';
-lockAmount = '24000'; //锁仓数额
-
+const lockAmount = '24000'; //锁仓数额
+let amount;
 describe("固定总量代币", function () {
     it('布署代币合约', async function () {
         ERC20Param = [
