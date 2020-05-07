@@ -24,10 +24,10 @@
 ### 多功能代币
 - [多功能ERC20代币,可增发,可销毁,可暂停,有封顶](./README/Multi/ERC20MultiFunction.md)
 - [多功能众筹合约:可增发,可销毁,有封顶,有配额,可暂停,有时限,白名单,成功后交付,不成功退款](./README/Multi/MultiFunctionCrowdsale.md)
-- [代币迁移合约](./README/Multi/ERC20Migrator.md)
-- [可快照的ERC20代币](./README/Multi/ERC20WithSnapshot.md)
 - [股份制受益人合约](./README/Multi/CrowdsalePaymentSplitter.md)
-- [分期释放合约](./README/Multi/ERC20WithTokenVesting.md)
+
+### 发行ERC777代币
+- [ERC777代币](./README/ERC777/ERC777Contract.md)
 
 ### 发行ERC721代币
 - [全功能ERC721代币](./README/ERC721/ERC721Full.md)
@@ -35,8 +35,11 @@
 - [可铸造ERC721代币](./README/Crowdsale/ERC721Mintable.md)
 - [可暂停的ERC721代币](./README/Crowdsale/ERC721Pausable.md)
 
-### 发行ERC777代币
-- [ERC777代币](./README/ERC777/ERC777Contract.md)
+### 草稿
+- [代币迁移合约](./README/Multi/ERC20Migrator.md)
+- [可快照的ERC20代币](./README/Multi/ERC20WithSnapshot.md)
+- [分期释放合约](./README/Multi/ERC20WithTokenVesting.md)
+
 ---
 ### 安装
 ```shell

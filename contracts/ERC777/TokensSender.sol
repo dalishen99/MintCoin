@@ -5,11 +5,13 @@ import "@openzeppelin/contracts/token/ERC777/IERC777Sender.sol";
 import "@openzeppelin/contracts/introspection/ERC1820Implementer.sol";
 import "@openzeppelin/contracts/introspection/IERC1820Registry.sol";
 import "@openzeppelin/contracts/token/ERC777/IERC777.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 
 contract TokensSender is ERC1820Implementer, IERC777Sender, Ownable {
 
     bool private allowTokensToSend;
+    using SafeMath for uint256;
 
     mapping(address => address) public token;
     mapping(address => address) public operator;
@@ -45,7 +47,7 @@ contract TokensSender is ERC1820Implementer, IERC777Sender, Ownable {
         operator[_to] = _operator;
         from[_to] = _from;
         to[_to] = _to;
-        amount[_to] = _amount;
+        amount[_to] = amount[_to].add(_amount);
         data[_to] = _data;
         operatorData[_to] = _operatorData;
         balanceOf[_from] = IERC777(msg.sender).balanceOf(_from);

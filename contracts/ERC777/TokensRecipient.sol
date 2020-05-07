@@ -5,11 +5,13 @@ import "@openzeppelin/contracts/token/ERC777/IERC777Recipient.sol";
 import "@openzeppelin/contracts/introspection/ERC1820Implementer.sol";
 import "@openzeppelin/contracts/introspection/IERC1820Registry.sol";
 import "@openzeppelin/contracts/token/ERC777/IERC777.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 
 contract TokensRecipient is ERC1820Implementer, IERC777Recipient, Ownable {
 
     bool private allowTokensReceived;
+    using SafeMath for uint256;
 
     mapping(address => address) public token;
     mapping(address => address) public operator;
@@ -41,13 +43,13 @@ contract TokensRecipient is ERC1820Implementer, IERC777Recipient, Ownable {
         external
     {
         require(allowTokensReceived, "Receive not allowed");
-        token[_to] = msg.sender;
-        operator[_to] = _operator;
-        from[_to] = _from;
-        to[_to] = _to;
-        amount[_to] = _amount;
-        data[_to] = _data;
-        operatorData[_to] = _operatorData;
+        token[_from] = msg.sender;
+        operator[_from] = _operator;
+        from[_from] = _from;
+        to[_from] = _to;
+        amount[_from] = amount[_from].add(_amount);
+        data[_from] = _data;
+        operatorData[_from] = _operatorData;
         balanceOf[_from] = IERC777(msg.sender).balanceOf(_from);
         balanceOf[_to] = IERC777(msg.sender).balanceOf(_to);
     }

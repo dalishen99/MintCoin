@@ -113,19 +113,5 @@ describe("测试安全发送到合约方法", function () {
         ]
         assert.ok(await ERC721Instance.supportsInterface(makeInterfaceId.ERC165(interfaces)));;
     });
-    // it(': supportsInterface()', async function () {
-    //     let interfaces = [
-    //         'balanceOf(address)',
-    //         'ownerOf(uint256)',
-    //         'approve(address,uint256)',
-    //         'getApproved(uint256)',
-    //         'setApprovalForAll(address,bool)',
-    //         'isApprovedForAll(address,address)',
-    //         'transferFrom(address,address,uint256)',
-    //         'safeTransferFrom(address,address,uint256)',
-    //         'safeTransferFrom(address,address,uint256,bytes)'
-    //     ]
-    //     console.log(makeInterfaceId.ERC1820('balanceOf(address)'));
-    //     //assert.ok(await ERC721Instance.supportsInterface());;
-    // });
+
 });

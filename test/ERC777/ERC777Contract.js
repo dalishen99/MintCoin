@@ -10,7 +10,7 @@ const ERC777 = require('../inc/ERC777');
 const EthValue = '10';
 const initialSupply = '1000000000';
 const defaultOperators = [sender];
-const amount = '100';
+let amount = '100';
 const userData = web3.utils.toHex('A gift');
 describe("ERC777代币", function () {
     it('实例化ERC1820注册表', async function () {
@@ -114,6 +114,7 @@ describe("测试ERC777合约的方法", function () {
         assert.equal(ERC777Instance.address, await TokensSenderInstance.token(receiver));
         assert.equal(owner, await TokensSenderInstance.operator(receiver));
         assert.equal(owner, await TokensSenderInstance.from(receiver));
+        assert.equal(receiver, await TokensSenderInstance.to(receiver));
         assert.equal(ether(amount).toString(), (await TokensSenderInstance.amount(receiver)).toString());
         assert.equal(userData, await TokensSenderInstance.data(receiver));
         assert.equal(null, await TokensSenderInstance.operatorData(receiver));
@@ -121,12 +122,13 @@ describe("测试ERC777合约的方法", function () {
         assert.equal('0', (await TokensSenderInstance.balanceOf(receiver)).toString());
     });
     it('验证接收接口: TokensRecipient()', async function () {
-        assert.equal(ERC777Instance.address, await TokensRecipientInstance.token(receiver));
-        assert.equal(owner, await TokensRecipientInstance.operator(receiver));
-        assert.equal(owner, await TokensRecipientInstance.from(receiver));
-        assert.equal(ether(amount).toString(), (await TokensRecipientInstance.amount(receiver)).toString());
-        assert.equal(userData, await TokensRecipientInstance.data(receiver));
-        assert.equal(null, await TokensRecipientInstance.operatorData(receiver));
+        assert.equal(ERC777Instance.address, await TokensRecipientInstance.token(owner));
+        assert.equal(owner, await TokensRecipientInstance.operator(owner));
+        assert.equal(owner, await TokensRecipientInstance.from(owner));
+        assert.equal(receiver, await TokensRecipientInstance.to(owner));
+        assert.equal(ether(amount).toString(), (await TokensRecipientInstance.amount(owner)).toString());
+        assert.equal(userData, await TokensRecipientInstance.data(owner));
+        assert.equal(null, await TokensRecipientInstance.operatorData(owner));
         assert.equal(ether((parseInt(initialSupply) - parseInt(amount) * 2).toString()).toString(), (await TokensRecipientInstance.balanceOf(owner)).toString());
         assert.equal(ether(amount), (await TokensRecipientInstance.balanceOf(receiver)).toString());
     });
