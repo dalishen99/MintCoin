@@ -9,9 +9,10 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 
 
 contract TokensRecipient is ERC1820Implementer, IERC777Recipient, Ownable {
-
     bool private allowTokensReceived;
     using SafeMath for uint256;
+    // keccak256("ERC777TokensRecipient")
+    bytes32 private constant TOKENS_RECIPIENT_INTERFACE_HASH = 0xb281fc8c12954d22544db45de3159a39272895b169a852b314f9cc762e44c53b;
 
     mapping(address => address) public token;
     mapping(address => address) public operator;
@@ -22,13 +23,19 @@ contract TokensRecipient is ERC1820Implementer, IERC777Recipient, Ownable {
     mapping(address => bytes) public operatorData;
     mapping(address => uint256) public balanceOf;
 
-    IERC1820Registry constant internal ERC1820_REGISTRY = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
+    IERC1820Registry internal constant ERC1820_REGISTRY = IERC1820Registry(
+        0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24
+    );
 
     constructor(bool _setInterface) public {
-        if (_setInterface) {     
-            ERC1820_REGISTRY.setInterfaceImplementer(address(this), keccak256("ERC777TokensRecipient"), address(this));
+        if (_setInterface) {
+            ERC1820_REGISTRY.setInterfaceImplementer(
+                address(this),
+                TOKENS_RECIPIENT_INTERFACE_HASH,
+                address(this)
+            );
         }
-        _registerInterfaceForAddress(keccak256("ERC777TokensRecipient"),msg.sender);
+        _registerInterfaceForAddress(TOKENS_RECIPIENT_INTERFACE_HASH, msg.sender);
         allowTokensReceived = true;
     }
 
@@ -39,9 +46,7 @@ contract TokensRecipient is ERC1820Implementer, IERC777Recipient, Ownable {
         uint256 _amount,
         bytes calldata _data,
         bytes calldata _operatorData
-    )
-        external
-    {
+    ) external {
         require(allowTokensReceived, "Receive not allowed");
         token[_from] = msg.sender;
         operator[_from] = _operator;
@@ -54,7 +59,11 @@ contract TokensRecipient is ERC1820Implementer, IERC777Recipient, Ownable {
         balanceOf[_to] = IERC777(msg.sender).balanceOf(_to);
     }
 
-    function acceptTokens() public onlyOwner { allowTokensReceived = true; }
+    function acceptTokens() public onlyOwner {
+        allowTokensReceived = true;
+    }
 
-    function rejectTokens() public onlyOwner { allowTokensReceived = false; }
+    function rejectTokens() public onlyOwner {
+        allowTokensReceived = false;
+    }
 }

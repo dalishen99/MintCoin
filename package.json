@@ -9,6 +9,7 @@
   "dependencies": {
     "@davidqhr/ganache-cli": "6.4.3",
     "@openzeppelin/contracts": "^2.5.0",
+    "@truffle/debug-utils": "^4.1.1",
     "@truffle/hdwallet-provider": "^1.0.34",
     "bip39": "^3.0.2",
     "ethers": "^4.0.47",
