@@ -3,9 +3,9 @@
 ## 有封顶代币
 > 有封顶的代币指的是在可增发代币的基础上设置了铸造封顶数额,当铸造到达封顶数额时将抛出异常.
 
-[合约文件: WithCapped.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithCapped.sol)
+[合约文件: ERC20WithCapped.sol](https://github.com/Fankouzu/MintCoin/blob/master/contracts/ERC20/ERC20WithCapped.sol)
 
-[测试脚本: WithCapped.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithCapped.js)
+[测试脚本: ERC20WithCapped.js](https://github.com/Fankouzu/MintCoin/blob/master/test/ERC20/ERC20WithCapped.js)
 
 [布署脚本: 5_deploy_ERC20WithCapped.js](https://github.com/Fankouzu/MintCoin/blob/master/migrations/5_deploy_ERC20WithCapped.js)
 
